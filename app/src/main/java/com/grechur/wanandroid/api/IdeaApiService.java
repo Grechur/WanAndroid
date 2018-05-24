@@ -9,6 +9,7 @@ import com.grechur.wanandroid.model.entity.home.MainArticle;
 import com.grechur.wanandroid.model.entity.UserInfo;
 import com.grechur.wanandroid.model.entity.knowlege.Knowledge;
 import com.grechur.wanandroid.model.entity.navigation.NaviArticle;
+import com.grechur.wanandroid.model.entity.project.ProjectBean;
 
 import java.util.List;
 
@@ -89,4 +90,7 @@ public interface IdeaApiService {
 
     @GET("navi/json")
     Observable<BasicResponse<List<NaviArticle>>> getNavigation();
+
+    @GET("tree/json")
+    Observable<BasicResponse<List<ProjectBean>>> getProject();
 }

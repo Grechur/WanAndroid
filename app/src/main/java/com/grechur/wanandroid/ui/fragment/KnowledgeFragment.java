@@ -17,16 +17,22 @@ import com.grechur.wanandroid.view.WrapRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * Created by zz on 2018/5/22.
  */
 
 public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implements KnowledgeContract.IKnowledgeView{
-
+    @BindView(R.id.knowledge_recycler_view)
     WrapRecyclerView knowledge_recycler_view;
 
     private KnowledgeAdapter mKnowledgeAdapter;
     private List<Knowledge> mKnowledge;
+
+    Unbinder unbinder;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_knowledge;
@@ -39,7 +45,8 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
 
     @Override
     protected void initView(View view) {
-        knowledge_recycler_view = view.findViewById(R.id.knowledge_recycler_view);
+        unbinder = ButterKnife.bind(this,view);
+//        knowledge_recycler_view = view.findViewById(R.id.knowledge_recycler_view);
 
         mKnowledge = new ArrayList<>();
         mKnowledgeAdapter = new KnowledgeAdapter(getActivity(),mKnowledge,R.layout.knowledge_item);
@@ -84,5 +91,11 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
     public void onSucceed(List<Knowledge> knowledges) {
         mKnowledge.addAll(knowledges);
         mKnowledgeAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
     }
 }

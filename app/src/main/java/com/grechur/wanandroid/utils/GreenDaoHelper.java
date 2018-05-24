@@ -20,7 +20,7 @@ public class GreenDaoHelper {
      * 设置greenDao
      */
     public static void initDatabase(Context context) {
-        mHelper = new DaoMaster.DevOpenHelper(context, "student_db", null);
+        mHelper = new DaoMaster.DevOpenHelper(context, "wan_db", null);
         mDb = mHelper.getWritableDatabase();
         mDaoMaster = new DaoMaster(mDb);
         mDaoSession = mDaoMaster.newSession();

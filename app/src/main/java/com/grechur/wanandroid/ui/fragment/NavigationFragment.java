@@ -6,27 +6,27 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 
 import com.grechur.wanandroid.R;
 import com.grechur.wanandroid.base.BaseFragment;
-import com.grechur.wanandroid.base.WanApplication;
 import com.grechur.wanandroid.contract.NavigationContract;
 import com.grechur.wanandroid.model.entity.Article;
 import com.grechur.wanandroid.model.entity.ArticleDao;
-import com.grechur.wanandroid.model.entity.DaoMaster;
-import com.grechur.wanandroid.model.entity.DaoSession;
 import com.grechur.wanandroid.model.entity.navigation.NaviArticle;
-import com.grechur.wanandroid.model.entity.navigation.NaviArticleDao;
 import com.grechur.wanandroid.presenter.NavigationPresenter;
 import com.grechur.wanandroid.utils.Constant;
 import com.grechur.wanandroid.utils.GreenDaoHelper;
 import com.grechur.wanandroid.view.adapter.ViewPagerAdapter;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by zz on 2018/5/22.
@@ -34,14 +34,19 @@ import java.util.List;
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
 public class NavigationFragment extends BaseFragment<NavigationPresenter> implements NavigationContract.INavigationView {
 
-    private TabLayout tl_layout;
-    private ViewPager view_pager;
+    public static final String TAG ="NavigationFragment";
+
+    @BindView(R.id.tl_layout)
+    TabLayout tl_layout;
+    @BindView(R.id.view_pager)
+    ViewPager view_pager;
+
+
     private List<String> mList ;
     private ViewPagerAdapter mPagerAdapter;
     private List<Fragment> mFragmentList;
-    private NaviArticleDao mNaviDao;
     private ArticleDao mArticleDao;
-
+    Unbinder unbinder;
     private static String[] titles={
             "常用网站","个人博客","公司博客","开发社区","常用工具","在线学习",
             "开放平台","互联网资讯","求职招聘","应用加固","三方支付","推送平台",
@@ -62,15 +67,16 @@ public class NavigationFragment extends BaseFragment<NavigationPresenter> implem
 
     @Override
     protected void initView(View view) {
-        tl_layout = view.findViewById(R.id.tl_layout);
-        view_pager = view.findViewById(R.id.view_pager);
+        unbinder = ButterKnife.bind(this,view);
+//        tl_layout = view.findViewById(R.id.tl_layout);
+//        view_pager = view.findViewById(R.id.view_pager);
         view_pager.setOffscreenPageLimit(0);
         mList = new ArrayList<String>(Arrays.asList(titles));
         mFragmentList = new ArrayList<>();
         for (String title : titles) {
             Bundle bundle = new Bundle();
             bundle.putString(Constant.INTENT_ID, title);
-            Fragment fragment = new NaviCommonFragment();
+            Fragment fragment = new NaviCommonFragment(title);
             fragment.setArguments(bundle);
             mFragmentList.add(fragment);
         }
@@ -104,7 +110,6 @@ public class NavigationFragment extends BaseFragment<NavigationPresenter> implem
     @Override
     protected void initData() {
 
-        mNaviDao = GreenDaoHelper.getDaoSession().getNaviArticleDao();
         mArticleDao = GreenDaoHelper.getDaoSession().getArticleDao();
         getPresenter().getNavigation();
     }
@@ -127,10 +132,16 @@ public class NavigationFragment extends BaseFragment<NavigationPresenter> implem
     @Override
     public void onSucceed(List<NaviArticle> articles) {
         for (NaviArticle article : articles) {
-//            mNaviDao.insert(article);
-//            for (Article article1 : article.articles) {
-//                mArticleDao.insert(article1);
-//            }
+            for (Article article1 : article.articles) {
+                long aa = mArticleDao.insertOrReplace(article1);
+                Log.e(TAG, "onSucceed: "+aa );
+            }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
     }
 }

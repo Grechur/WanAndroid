@@ -25,6 +25,10 @@ import com.zhouwei.mzbanner.holder.MZViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * Created by zz on 2018/5/22.
  */
@@ -32,21 +36,23 @@ import java.util.List;
 public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements HomeArticleContract.IArticlesView{
 
     private View headerView;
+
     private MZBannerView mMZBanner;
 
-//    @BindView(R.id.wrawp_recycler_view)
+    @BindView(R.id.wrawp_recycler_view)
     WrapRecyclerView mWrapRecyclerView;
 
     private HomeFrgAdapter mHomeFrgAdapter;
     private List<Article> mArticles;
 
+    Unbinder unbinder;
     @Override
     protected void initView(View view) {
+        unbinder = ButterKnife.bind(this,view);
         headerView = LayoutInflater.from(getActivity()).inflate(R.layout.banner_layout,null);
 
         mMZBanner = (MZBannerView) headerView.findViewById(R.id.banner);
-
-        mWrapRecyclerView = view.findViewById(R.id.wrawp_recycler_view);
+//        mWrapRecyclerView = view.findViewById(R.id.wrawp_recycler_view);
         mWrapRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 //        mWrapRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),
 //                DividerItemDecoration.VERTICAL));
@@ -144,5 +150,12 @@ public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements 
         super.onPause();
         mMZBanner.pause();//暂停轮播
         mMZBanner.destroyDrawingCache();
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
     }
 }
