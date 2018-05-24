@@ -13,10 +13,12 @@ import com.grechur.wanandroid.presenter.UserInfoPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class LoginActivity  extends BaseMvpActivity<UserInfoPresenter> implements UserInfoContract.IUserInfoView {
     @BindView(R.id.text)
     TextView text;
+    Unbinder unbinder;
     @Override
     protected void setContentView() {
         setContentView(R.layout.activity_login);
@@ -29,7 +31,7 @@ public class LoginActivity  extends BaseMvpActivity<UserInfoPresenter> implement
 
     @Override
     protected void initView() {
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
     }
 
     @Override
@@ -62,5 +64,11 @@ public class LoginActivity  extends BaseMvpActivity<UserInfoPresenter> implement
     @Override
     public void unLoading() {
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
     }
 }

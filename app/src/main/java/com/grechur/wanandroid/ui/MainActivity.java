@@ -26,7 +26,9 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationBar.OnTabSelectedListener{
 
+    @BindView(R.id.bottom_navigation_bar)
     BottomNavigationBar bottomNavigationBar;
+    @BindView(R.id.title)
     TextView title;
 
     private FragmentManager mFragmentManager;
@@ -38,10 +40,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        bottomNavigationBar = findViewById(R.id.bottom_navigation_bar);
+        ButterKnife.bind(this);
+//        bottomNavigationBar = findViewById(R.id.bottom_navigation_bar);
         mFragmentManager = getSupportFragmentManager();
 
-        title = findViewById(R.id.title);
+//        title = findViewById(R.id.title);
 
         bottomNavigationBar
                 .addItem(new BottomNavigationItem(R.mipmap.home, "首页"))
