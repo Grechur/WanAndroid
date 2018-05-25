@@ -10,6 +10,7 @@ import com.grechur.wanandroid.model.entity.UserInfo;
 import com.grechur.wanandroid.model.entity.knowlege.Knowledge;
 import com.grechur.wanandroid.model.entity.navigation.NaviArticle;
 import com.grechur.wanandroid.model.entity.project.ProjectBean;
+import com.grechur.wanandroid.model.entity.project.ProjectData;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by Chris on 2017/11/30.
@@ -91,6 +93,9 @@ public interface IdeaApiService {
     @GET("navi/json")
     Observable<BasicResponse<List<NaviArticle>>> getNavigation();
 
-    @GET("tree/json")
+    @GET("project/tree/json")
     Observable<BasicResponse<List<ProjectBean>>> getProject();
+
+    @GET("project/list/{index}/json")
+    Observable<BasicResponse<ProjectData>> getProjectData(@Path("index") int index, @Query("cid") int id);
 }

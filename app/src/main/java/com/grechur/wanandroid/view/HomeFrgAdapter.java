@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.grechur.wanandroid.R;
 import com.grechur.wanandroid.model.entity.Article;
 import com.grechur.wanandroid.utils.DateUtil;
+import com.grechur.wanandroid.view.adapter.FlowAdapter;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class HomeFrgAdapter extends RecyclerView.Adapter<HomeFrgAdapter.MyViewHo
     private List<Article> mDatas;
     private LayoutInflater mLayoutInflater;
     private int mLayoutId;
-
+    private FlowAdapter.OnItemClickListen onItemClickListen;
     public HomeFrgAdapter(Context context, List<Article> data, int layoutId) {
         this.mDatas = data;
         this.mLayoutInflater = LayoutInflater.from(context);
@@ -47,6 +48,12 @@ public class HomeFrgAdapter extends RecyclerView.Adapter<HomeFrgAdapter.MyViewHo
         long time = article.publishTime;
         String date = DateUtil.getDay(time);
         holder.tv_time.setText("时间："+article.niceDate);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClickListen.onItemClick(v,position);
+            }
+        });
     }
 
     @Override
@@ -74,5 +81,11 @@ public class HomeFrgAdapter extends RecyclerView.Adapter<HomeFrgAdapter.MyViewHo
 
         }
     }
+    public void setItemClickListen(FlowAdapter.OnItemClickListen onItemClickListen){
+        this.onItemClickListen = onItemClickListen;
+    }
 
+    public interface OnItemClickListen{
+        void onItemClick(View view, int position);
+    }
 }

@@ -23,7 +23,7 @@ public class ProjectPresent extends BasePresenter<ProjectContract.IProjectView,P
         getView().onLoading();
 
         model.getProjects().subscribeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DefaultObserver<BasicResponse<List<ProjectBean>>>() {
                     @Override
                     public void onSuccess(BasicResponse<List<ProjectBean>> response) {

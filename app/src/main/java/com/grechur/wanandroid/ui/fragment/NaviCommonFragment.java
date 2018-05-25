@@ -1,6 +1,7 @@
 package com.grechur.wanandroid.ui.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,11 @@ import android.view.ViewGroup;
 import com.grechur.wanandroid.R;
 import com.grechur.wanandroid.model.entity.Article;
 import com.grechur.wanandroid.model.entity.ArticleDao;
+import com.grechur.wanandroid.ui.WebViewActivity;
+import com.grechur.wanandroid.utils.Constant;
 import com.grechur.wanandroid.utils.GreenDaoHelper;
+import com.grechur.wanandroid.utils.ToastUtils;
+import com.grechur.wanandroid.view.OnItemClickListener;
 import com.grechur.wanandroid.view.WrapRecyclerView;
 import com.grechur.wanandroid.view.adapter.DividerGridItemDecoration;
 import com.grechur.wanandroid.view.adapter.FlowAdapter;
@@ -19,6 +24,8 @@ import com.grechur.wanandroid.view.adapter.FlowLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,18 +44,23 @@ public class NaviCommonFragment extends Fragment {
     private String mProductId;
     //Article的本地数据库的dao
     private ArticleDao mArticleDao;
-    //查询到的Article
-    private Article article;
     //列表的Article
     private List<Article> mArticles;
     //流布局的adapter
     private FlowAdapter mFlowAdapter;
 
     Unbinder unbinder;
+    boolean isVisiable = false;
 
-    public NaviCommonFragment(String productId){
-        this.mProductId = productId;
+    public static Fragment newInstance(String url){
+        Fragment fragment=new NaviCommonFragment();
+        Bundle bundle=new Bundle();
+        bundle.putString(Constant.INTENT_ID,url);
+        fragment.setArguments(bundle);
+        return fragment;
     }
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -63,29 +75,45 @@ public class NaviCommonFragment extends Fragment {
         mFlowAdapter = new FlowAdapter(getActivity(),mArticles);
 
         common_recycler_view.setAdapter(mFlowAdapter);
-
         mArticleDao = GreenDaoHelper.getDaoSession().getArticleDao();
+        common_recycler_view.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent();
+                intent.setClass(getActivity(), WebViewActivity.class);
+                intent.putExtra(Constant.INTENT_URL,mArticles.get(position).link);
+                intent.putExtra(Constant.INTENT_TITLE,mArticles.get(position).desc);
+                getActivity().startActivity(intent);
+            }
+        });
         return rootView;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-//        productId = getArguments().getString(Constant.INTENT_ID);
+        mProductId = getArguments().getString(Constant.INTENT_ID);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        isVisiable = isVisibleToUser;
+        super.setUserVisibleHint(isVisibleToUser);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(mArticles!=null&&mArticles.size()>0){
-            mArticles.clear();
-        }
-        mArticles.addAll(mArticleDao.queryBuilder().where(ArticleDao.Properties.ChapterName.eq(mProductId)).list());
-//        if(article!=null){
-//            mArticles.add(article);
-//        }
+//        if(isVisiable){
+//            ToastUtils.show(mProductId+"页面在加载");
+            if(mArticles!=null&&mArticles.size()>0){
+                mArticles.clear();
+            }
+            List<Article> list = mArticleDao.queryBuilder().where(ArticleDao.Properties.ChapterName.eq(mProductId)).list();
+            if(list!=null&&list.size()>0) mArticles.addAll(list);
 
-        if(mArticles.size()>0) mFlowAdapter.notifyDataSetChanged();
+            if(mArticles.size()>0) mFlowAdapter.notifyDataSetChanged();
+//        }
     }
 
     @Override

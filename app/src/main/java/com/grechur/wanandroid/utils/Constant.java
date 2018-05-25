@@ -6,4 +6,9 @@ package com.grechur.wanandroid.utils;
 
 public class Constant {
     public static final String INTENT_ID = "intent_id";
+
+    public static final String INTENT_URL = "intent_url";
+    public static final String INTENT_PID = "intent_pid";
+
+    public static final String INTENT_TITLE = "intent_title";
 }

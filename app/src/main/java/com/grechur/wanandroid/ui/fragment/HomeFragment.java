@@ -1,6 +1,7 @@
 package com.grechur.wanandroid.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
@@ -16,7 +17,10 @@ import com.grechur.wanandroid.model.entity.Article;
 import com.grechur.wanandroid.model.entity.home.BannerItem;
 import com.grechur.wanandroid.model.entity.home.MainArticle;
 import com.grechur.wanandroid.presenter.HomeArticlePresenter;
+import com.grechur.wanandroid.ui.WebViewActivity;
+import com.grechur.wanandroid.utils.Constant;
 import com.grechur.wanandroid.view.HomeFrgAdapter;
+import com.grechur.wanandroid.view.OnItemClickListener;
 import com.grechur.wanandroid.view.WrapRecyclerView;
 import com.zhouwei.mzbanner.MZBannerView;
 import com.zhouwei.mzbanner.holder.MZHolderCreator;
@@ -46,11 +50,13 @@ public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements 
     private List<Article> mArticles;
 
     Unbinder unbinder;
+    private List<BannerItem> mBanners;
+
     @Override
     protected void initView(View view) {
         unbinder = ButterKnife.bind(this,view);
         headerView = LayoutInflater.from(getActivity()).inflate(R.layout.banner_layout,null);
-
+        mBanners = new ArrayList<>();
         mMZBanner = (MZBannerView) headerView.findViewById(R.id.banner);
 //        mWrapRecyclerView = view.findViewById(R.id.wrawp_recycler_view);
         mWrapRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -60,6 +66,27 @@ public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements 
         mHomeFrgAdapter = new HomeFrgAdapter(getActivity(),mArticles,R.layout.recycle_item);
         mWrapRecyclerView.setAdapter(mHomeFrgAdapter);
         mWrapRecyclerView.addHeaderView(headerView);
+        mWrapRecyclerView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent();
+                intent.setClass(getActivity(), WebViewActivity.class);
+                intent.putExtra(Constant.INTENT_URL,mArticles.get(position).link);
+                intent.putExtra(Constant.INTENT_TITLE,mArticles.get(position).title);
+                getActivity().startActivity(intent);
+            }
+        });
+
+        mMZBanner.setBannerPageClickListener(new MZBannerView.BannerPageClickListener() {
+            @Override
+            public void onPageClick(View view, int i) {
+                Intent intent = new Intent();
+                intent.setClass(getActivity(), WebViewActivity.class);
+                intent.putExtra(Constant.INTENT_URL,mBanners.get(i).url);
+                intent.putExtra(Constant.INTENT_TITLE,mBanners.get(i).title);
+                getActivity().startActivity(intent);
+            }
+        });
     }
     @Override
     protected void initData() {
@@ -103,8 +130,9 @@ public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements 
 
     @Override
     public void getBanner(List<BannerItem> bannerItem) {
+        mBanners = bannerItem;
         // 设置数据
-        mMZBanner.setPages(bannerItem, new MZHolderCreator<BannerViewHolder>() {
+        mMZBanner.setPages(mBanners, new MZHolderCreator<BannerViewHolder>() {
             @Override
             public BannerViewHolder createViewHolder() {
                 return new BannerViewHolder();

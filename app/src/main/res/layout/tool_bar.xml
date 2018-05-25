@@ -3,7 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:background="@color/background">
+    android:background="@color/background"
+    android:id="@+id/tool_bar">
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        />
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
@@ -11,6 +17,7 @@
         android:text="main"
         android:layout_gravity = "center"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_waybill_detail_20"/>
+        android:textSize="@dimen/text_waybill_detail_20"
+        android:maxLength="10"/>
 
 </android.support.v7.widget.Toolbar>

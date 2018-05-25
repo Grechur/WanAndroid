@@ -70,13 +70,13 @@ public class NavigationFragment extends BaseFragment<NavigationPresenter> implem
         unbinder = ButterKnife.bind(this,view);
 //        tl_layout = view.findViewById(R.id.tl_layout);
 //        view_pager = view.findViewById(R.id.view_pager);
-        view_pager.setOffscreenPageLimit(0);
+        view_pager.setOffscreenPageLimit(1);
         mList = new ArrayList<String>(Arrays.asList(titles));
         mFragmentList = new ArrayList<>();
         for (String title : titles) {
             Bundle bundle = new Bundle();
             bundle.putString(Constant.INTENT_ID, title);
-            Fragment fragment = new NaviCommonFragment(title);
+            Fragment fragment = NaviCommonFragment.newInstance(title);
             fragment.setArguments(bundle);
             mFragmentList.add(fragment);
         }
@@ -87,7 +87,9 @@ public class NavigationFragment extends BaseFragment<NavigationPresenter> implem
         tl_layout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
+                String title = tab.getText().toString();
+                int position = mList.indexOf(title);
+                view_pager.setCurrentItem(position);
             }
 
             @Override

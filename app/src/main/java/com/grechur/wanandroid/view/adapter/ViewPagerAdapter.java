@@ -43,12 +43,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Fragment fragment = fragments.get(position);
-//        Bundle bundle = new Bundle();
-//        bundle.putString(Constant.INTENT_ID, tList.get(position));
-        if(fragment ==null){
-            fragment = new NaviCommonFragment(tList.get(position));
-        }
-//        fragment.setArguments(bundle);
+
         return fragment;
     }
 

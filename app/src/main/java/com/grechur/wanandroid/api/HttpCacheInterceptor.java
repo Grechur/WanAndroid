@@ -23,7 +23,7 @@ public class HttpCacheInterceptor implements Interceptor {
             request = request.newBuilder()
                     .cacheControl(CacheControl.FORCE_CACHE)
                     .build();
-            LogUtils.d("Okhttp", "no network");
+            LogUtils.e("Okhttp", "no network");
         }
 
         Response originalResponse = chain.proceed(request);
