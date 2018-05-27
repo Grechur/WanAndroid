@@ -29,7 +29,8 @@
         <activity
             android:name=".ui.LoginActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.WebViewActivity"></activity>
+        <activity android:name=".ui.WebViewActivity" />
+        <activity android:name=".ui.KnowledgeProcActivity"></activity>
     </application>
 
 </manifest>

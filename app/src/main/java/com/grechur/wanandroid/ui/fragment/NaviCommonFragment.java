@@ -11,11 +11,9 @@ import android.view.ViewGroup;
 
 import com.grechur.wanandroid.R;
 import com.grechur.wanandroid.model.entity.Article;
-import com.grechur.wanandroid.model.entity.ArticleDao;
 import com.grechur.wanandroid.ui.WebViewActivity;
 import com.grechur.wanandroid.utils.Constant;
-import com.grechur.wanandroid.utils.GreenDaoHelper;
-import com.grechur.wanandroid.utils.ToastUtils;
+//import com.grechur.wanandroid.utils.GreenDaoHelper;
 import com.grechur.wanandroid.view.OnItemClickListener;
 import com.grechur.wanandroid.view.WrapRecyclerView;
 import com.grechur.wanandroid.view.adapter.DividerGridItemDecoration;
@@ -42,8 +40,7 @@ public class NaviCommonFragment extends Fragment {
     WrapRecyclerView common_recycler_view;
     //从activity传过来的数据
     private String mProductId;
-    //Article的本地数据库的dao
-    private ArticleDao mArticleDao;
+
     //列表的Article
     private List<Article> mArticles;
     //流布局的adapter
@@ -52,7 +49,10 @@ public class NaviCommonFragment extends Fragment {
     Unbinder unbinder;
     boolean isVisiable = false;
 
-    public static Fragment newInstance(String url){
+    private static Map<String,List<Article>> mArticleMap = new ConcurrentHashMap<>();
+
+    public static Fragment newInstance(String url,List<Article> datas){
+        mArticleMap.put(url,datas);
         Fragment fragment=new NaviCommonFragment();
         Bundle bundle=new Bundle();
         bundle.putString(Constant.INTENT_ID,url);
@@ -67,6 +67,7 @@ public class NaviCommonFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_navi_common,container,false);
 //        common_recycler_view = rootView.findViewById(R.id.common_recycler_view);
         unbinder = ButterKnife.bind(this,rootView);
+        mProductId = getArguments().getString(Constant.INTENT_ID);
         //FlowLayoutManager自定义的流布局manager
         common_recycler_view.setLayoutManager(new FlowLayoutManager());
         common_recycler_view.addItemDecoration(new DividerGridItemDecoration(getActivity(),R.drawable.line_drawable));
@@ -75,14 +76,13 @@ public class NaviCommonFragment extends Fragment {
         mFlowAdapter = new FlowAdapter(getActivity(),mArticles);
 
         common_recycler_view.setAdapter(mFlowAdapter);
-        mArticleDao = GreenDaoHelper.getDaoSession().getArticleDao();
         common_recycler_view.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), WebViewActivity.class);
                 intent.putExtra(Constant.INTENT_URL,mArticles.get(position).link);
-                intent.putExtra(Constant.INTENT_TITLE,mArticles.get(position).desc);
+                intent.putExtra(Constant.INTENT_TITLE,mArticles.get(position).title);
                 getActivity().startActivity(intent);
             }
         });
@@ -92,7 +92,7 @@ public class NaviCommonFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        mProductId = getArguments().getString(Constant.INTENT_ID);
+
     }
 
     @Override
@@ -104,16 +104,12 @@ public class NaviCommonFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//        if(isVisiable){
-//            ToastUtils.show(mProductId+"页面在加载");
             if(mArticles!=null&&mArticles.size()>0){
                 mArticles.clear();
             }
-            List<Article> list = mArticleDao.queryBuilder().where(ArticleDao.Properties.ChapterName.eq(mProductId)).list();
+            List<Article> list = mArticleMap.get(mProductId);
             if(list!=null&&list.size()>0) mArticles.addAll(list);
-
             if(mArticles.size()>0) mFlowAdapter.notifyDataSetChanged();
-//        }
     }
 
     @Override

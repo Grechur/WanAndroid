@@ -19,5 +19,11 @@
         android:textColor="@color/white"
         android:textSize="@dimen/text_waybill_detail_20"
         android:maxLength="10"/>
-
+    <ImageView
+        android:id="@+id/iv_search"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_gravity = "right"
+        android:layout_marginRight="13dp"
+        />
 </android.support.v7.widget.Toolbar>

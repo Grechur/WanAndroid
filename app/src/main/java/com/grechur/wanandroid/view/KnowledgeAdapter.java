@@ -25,11 +25,6 @@ public class KnowledgeAdapter extends CommonRecyclerAdapter<Knowledge>{
         this.mContext = context;
     }
 
-    public KnowledgeAdapter(Context context, List<Knowledge> data, MultiTypeSupport<Knowledge> multiTypeSupport) {
-        super(context, data, multiTypeSupport);
-        this.mData = data;
-        this.mContext = context;
-    }
 
     @Override
     public void convert(ViewHolder viewHolder, Knowledge knowledge) {

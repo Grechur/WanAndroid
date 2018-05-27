@@ -12,12 +12,10 @@ import android.view.View;
 import com.grechur.wanandroid.R;
 import com.grechur.wanandroid.base.BaseFragment;
 import com.grechur.wanandroid.contract.NavigationContract;
-import com.grechur.wanandroid.model.entity.Article;
-import com.grechur.wanandroid.model.entity.ArticleDao;
 import com.grechur.wanandroid.model.entity.navigation.NaviArticle;
 import com.grechur.wanandroid.presenter.NavigationPresenter;
 import com.grechur.wanandroid.utils.Constant;
-import com.grechur.wanandroid.utils.GreenDaoHelper;
+import com.grechur.wanandroid.view.adapter.NaviViewPagerAdapter;
 import com.grechur.wanandroid.view.adapter.ViewPagerAdapter;
 
 import java.util.ArrayList;
@@ -40,13 +38,10 @@ public class NavigationFragment extends BaseFragment<NavigationPresenter> implem
     TabLayout tl_layout;
     @BindView(R.id.view_pager)
     ViewPager view_pager;
-
-
     private List<String> mList ;
     private ViewPagerAdapter mPagerAdapter;
     private List<Fragment> mFragmentList;
-    private ArticleDao mArticleDao;
-    Unbinder unbinder;
+    private Unbinder unbind;
     private static String[] titles={
             "常用网站","个人博客","公司博客","开发社区","常用工具","在线学习",
             "开放平台","互联网资讯","求职招聘","应用加固","三方支付","推送平台",
@@ -67,41 +62,23 @@ public class NavigationFragment extends BaseFragment<NavigationPresenter> implem
 
     @Override
     protected void initView(View view) {
-        unbinder = ButterKnife.bind(this,view);
+        unbind = ButterKnife.bind(this,view);
 //        tl_layout = view.findViewById(R.id.tl_layout);
 //        view_pager = view.findViewById(R.id.view_pager);
         view_pager.setOffscreenPageLimit(1);
-        mList = new ArrayList<String>(Arrays.asList(titles));
+        mList = new ArrayList<String>();
         mFragmentList = new ArrayList<>();
-        for (String title : titles) {
-            Bundle bundle = new Bundle();
-            bundle.putString(Constant.INTENT_ID, title);
-            Fragment fragment = NaviCommonFragment.newInstance(title);
-            fragment.setArguments(bundle);
-            mFragmentList.add(fragment);
-        }
-        mPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(),mFragmentList,mList);
-        view_pager.setAdapter(mPagerAdapter);
-        tl_layout.setupWithViewPager(view_pager);
-        tl_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tl_layout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                String title = tab.getText().toString();
-                int position = mList.indexOf(title);
-                view_pager.setCurrentItem(position);
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+//        for (String title : titles) {
+//            Bundle bundle = new Bundle();
+//            bundle.putString(Constant.INTENT_ID, title);
+//            Fragment fragment = NaviCommonFragment.newInstance(title);
+//            fragment.setArguments(bundle);
+//            mFragmentList.add(fragment);
+//        }
+//        mPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(),mFragmentList,mList);
+//        view_pager.setAdapter(mPagerAdapter);
+//        tl_layout.setupWithViewPager(view_pager);
+//        tl_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
     }
 
     @Override
@@ -111,8 +88,6 @@ public class NavigationFragment extends BaseFragment<NavigationPresenter> implem
 
     @Override
     protected void initData() {
-
-        mArticleDao = GreenDaoHelper.getDaoSession().getArticleDao();
         getPresenter().getNavigation();
     }
 
@@ -134,16 +109,23 @@ public class NavigationFragment extends BaseFragment<NavigationPresenter> implem
     @Override
     public void onSucceed(List<NaviArticle> articles) {
         for (NaviArticle article : articles) {
-            for (Article article1 : article.articles) {
-                long aa = mArticleDao.insertOrReplace(article1);
-                Log.e(TAG, "onSucceed: "+aa );
-            }
+            mList.add(article.name);
+            Bundle bundle = new Bundle();
+            bundle.putString(Constant.INTENT_ID, article.name);
+            Fragment fragment = NaviCommonFragment.newInstance(article.name,article.articles);
+            fragment.setArguments(bundle);
+            mFragmentList.add(fragment);
         }
+        view_pager.setCurrentItem(0);
+        mPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(),mFragmentList,mList);
+        view_pager.setAdapter(mPagerAdapter);
+        tl_layout.setupWithViewPager(view_pager);
+        tl_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unbinder.unbind();
+        unbind.unbind();
     }
 }

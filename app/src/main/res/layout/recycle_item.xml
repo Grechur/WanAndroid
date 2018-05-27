@@ -26,7 +26,7 @@
             android:layout_gravity="center_vertical"
             android:text="这是文章标题"
             android:textColor="@color/title_text"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginLeft="10dp"
             />
     </LinearLayout>
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="@color/message_text"
             android:text="分类：" />
 

@@ -5,6 +5,7 @@ package com.grechur.wanandroid.api;
 import com.grechur.wanandroid.base.BasicResponse;
 import com.grechur.wanandroid.model.entity.Article;
 import com.grechur.wanandroid.model.entity.home.BannerItem;
+import com.grechur.wanandroid.model.entity.home.History;
 import com.grechur.wanandroid.model.entity.home.MainArticle;
 import com.grechur.wanandroid.model.entity.UserInfo;
 import com.grechur.wanandroid.model.entity.knowlege.Knowledge;
@@ -98,4 +99,15 @@ public interface IdeaApiService {
 
     @GET("project/list/{index}/json")
     Observable<BasicResponse<ProjectData>> getProjectData(@Path("index") int index, @Query("cid") int id);
+
+//    http://www.wanandroid.com/article/list/0/json?cid=60
+    @GET("article/list/{index}/json")
+    Observable<BasicResponse<MainArticle>> getKnowArticle(@Path("index") int index, @Query("cid") int id);
+
+    @GET("friend/json")
+    Observable<BasicResponse<List<History>>> getMostUse();
+
+    @GET("hotkey/json")
+    Observable<BasicResponse<List<History>>> getHotCode();
+
 }

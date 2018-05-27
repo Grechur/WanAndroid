@@ -1,5 +1,6 @@
 package com.grechur.wanandroid.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -7,8 +8,10 @@ import android.view.View;
 import com.grechur.wanandroid.R;
 import com.grechur.wanandroid.base.BaseFragment;
 import com.grechur.wanandroid.contract.KnowledgeContract;
+import com.grechur.wanandroid.model.entity.knowlege.Children;
 import com.grechur.wanandroid.model.entity.knowlege.Knowledge;
 import com.grechur.wanandroid.presenter.KnowledgePresenter;
+import com.grechur.wanandroid.ui.KnowledgeProcActivity;
 import com.grechur.wanandroid.utils.ToastUtils;
 import com.grechur.wanandroid.view.KnowledgeAdapter;
 import com.grechur.wanandroid.view.OnItemClickListener;
@@ -57,6 +60,18 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
             @Override
             public void onItemClick(int position) {
                 ToastUtils.show("第"+position+"被点击");
+                List<Children> children = mKnowledge.get(position).children;
+                ArrayList<String> sList = new ArrayList<>();
+                ArrayList<String> iList = new ArrayList<>();
+                for (Children child : children) {
+                    sList.add(child.name);
+                    iList.add(child.id+"");
+                }
+                Intent intent = new Intent(getActivity(), KnowledgeProcActivity.class);
+                intent.putStringArrayListExtra("tab_title",sList);
+                intent.putStringArrayListExtra("tab_id",iList);
+                intent.putExtra("title",mKnowledge.get(position).name);
+                getActivity().startActivity(intent);
             }
         });
     }

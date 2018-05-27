@@ -1,0 +1,54 @@
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/search_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:background="@color/colorCard"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    app:layout_scrollFlags="scroll|enterAlways">
+
+    <ImageView
+        android:id="@+id/search_back_ib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@null"
+        android:src="@drawable/selector_back_arrow_bg"
+        android:layout_marginRight="12dp" />
+
+    <TextView
+        android:id="@+id/search_tv"
+        android:layout_width="54dp"
+        android:layout_height="28dp"
+        android:layout_gravity="end"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/search_bg"
+        android:contentDescription="@null"
+        android:gravity="center"
+        android:text="搜索"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:layout_marginRight="12dp" />
+
+
+
+        <EditText
+            android:id="@+id/search_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:inputType="text"
+            android:labelFor="@id/search_edit"
+            android:textColor="@color/title_black"
+            android:textCursorDrawable="@drawable/shape_cursor"
+            android:textSize="14sp"
+            android:paddingEnd="1dp"
+            android:layout_marginRight="12dp"
+            android:paddingLeft="27dp"
+            android:paddingRight="1dp"
+            android:drawableLeft="@drawable/ic_search"
+            android:hint="输入字段搜索"/>
+
+</android.support.v7.widget.Toolbar>

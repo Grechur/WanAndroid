@@ -54,6 +54,10 @@ public class ProjectFragment extends BaseFragment<ProjectPresent> implements Pro
         view_project_pager.setOffscreenPageLimit(1);
         mList = new ArrayList<String>();
         mFragmentList = new ArrayList<>();
+        mPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(),mFragmentList,mList);
+        view_project_pager.setAdapter(mPagerAdapter);
+        tl_project_layout.setupWithViewPager(view_project_pager);
+        tl_project_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
     }
 
     @Override
@@ -91,9 +95,12 @@ public class ProjectFragment extends BaseFragment<ProjectPresent> implements Pro
             fragment.setArguments(bundle);
             mFragmentList.add(fragment);
         }
-        mPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(),mFragmentList,mList);
-        view_project_pager.setAdapter(mPagerAdapter);
-        tl_project_layout.setupWithViewPager(view_project_pager);
-        tl_project_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        mPagerAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unbind.unbind();
     }
 }
