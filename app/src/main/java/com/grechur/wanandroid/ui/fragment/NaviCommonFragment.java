@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager;
 import com.grechur.wanandroid.R;
 import com.grechur.wanandroid.model.entity.Article;
 import com.grechur.wanandroid.ui.WebViewActivity;
@@ -68,8 +69,9 @@ public class NaviCommonFragment extends Fragment {
 //        common_recycler_view = rootView.findViewById(R.id.common_recycler_view);
         unbinder = ButterKnife.bind(this,rootView);
         mProductId = getArguments().getString(Constant.INTENT_ID);
-        //FlowLayoutManager自定义的流布局manager
-        common_recycler_view.setLayoutManager(new FlowLayoutManager());
+        //ChipsLayoutManager自定义的流布局manager
+        ChipsLayoutManager layoutManager = ChipsLayoutManager.newBuilder(getContext()).build();
+        common_recycler_view.setLayoutManager(layoutManager);
         common_recycler_view.addItemDecoration(new DividerGridItemDecoration(getActivity(),R.drawable.line_drawable));
         mArticles = new ArrayList<>();
 

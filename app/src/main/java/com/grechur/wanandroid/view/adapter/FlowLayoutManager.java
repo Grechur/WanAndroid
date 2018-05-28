@@ -1,6 +1,8 @@
 package com.grechur.wanandroid.view.adapter;
 
 import android.graphics.Rect;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
@@ -13,7 +15,7 @@ import java.util.List;
 /**
  * 一种流式布局的LayoutManager
  */
-
+@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class FlowLayoutManager extends RecyclerView.LayoutManager {
 
     private static final String TAG = FlowLayoutManager.class.getSimpleName();
@@ -178,6 +180,7 @@ public class FlowLayoutManager extends RecyclerView.LayoutManager {
     }
 
     //对出现在屏幕上的item进行展示，超出屏幕的item回收到缓存中
+
     private void fillLayout(RecyclerView.Recycler recycler, RecyclerView.State state) {
         if (state.isPreLayout()) { // 跳过preLayout，preLayout主要用于支持动画
             return;
@@ -197,15 +200,17 @@ public class FlowLayoutManager extends RecyclerView.LayoutManager {
                 List<Item> views = row.views;
                 for (int i = 0; i < views.size(); i++) {
                     View scrap = views.get(i).view;
-                    measureChildWithMargins(scrap, 0, 0);
-                    addView(scrap);
-                    Rect frame = views.get(i).rect;
-                    //将这个item布局出来
-                    layoutDecoratedWithMargins(scrap,
-                            frame.left,
-                            frame.top - verticalScrollOffset,
-                            frame.right,
-                            frame.bottom - verticalScrollOffset);
+                    if(!scrap.isAttachedToWindow()){
+                        measureChildWithMargins(scrap, 0, 0);
+                        addView(scrap);
+                        Rect frame = views.get(i).rect;
+                        //将这个item布局出来
+                        layoutDecoratedWithMargins(scrap,
+                                frame.left,
+                                frame.top - verticalScrollOffset,
+                                frame.right,
+                                frame.bottom - verticalScrollOffset);
+                    }
                 }
             } else {
                 //将不在屏幕中的item放到缓存中

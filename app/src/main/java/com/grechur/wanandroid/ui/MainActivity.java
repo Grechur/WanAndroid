@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.grechur.wanandroid.R;
+import com.grechur.wanandroid.ui.fragment.HistoryFragment;
 import com.grechur.wanandroid.ui.fragment.HomeFragment;
 import com.grechur.wanandroid.ui.fragment.KnowledgeFragment;
 import com.grechur.wanandroid.ui.fragment.NavigationFragment;
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     private KnowledgeFragment mKnowledgeFragment;
     private NavigationFragment mNavigationFragment;
     private ProjectFragment mProjectFragment;
-    private PopupWindow search_pop;
+    private HistoryFragment mHistoryFragment;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,6 +110,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         toggle.syncState();
         mDrawerLayout.addDrawerListener(toggle);
 
+        mHistoryFragment = new HistoryFragment();
+
 }
 
 
@@ -158,6 +162,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         }
     }
 
+
     @Override
     public void onTabUnselected(int position) {
 
@@ -168,11 +173,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
 
     }
 
-    @OnClick({R.id.iv_back})
+    @OnClick({R.id.iv_back,R.id.iv_search})
     void onClick(View view){
         switch (view.getId()){
             case R.id.iv_search:
-
+                FragmentTransaction transaction = mFragmentManager.beginTransaction();
+                if(mHistoryFragment==null){
+                    mHistoryFragment = new HistoryFragment();
+                }
+                mHistoryFragment.show(transaction,"SearchDialogFragment");
                 break;
         }
     }

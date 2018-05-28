@@ -13,7 +13,7 @@
     <color name="message_text">#999999</color>
     <color name="label_text">#666666</color>
 
-    <color name="item_background">#ff9376</color>
+    <color name="item_background">#22ff9376</color>
     <color name="colorCard">#FFFFFF</color>
 
     <color name="while_most_color">#e4e4e4</color>
@@ -21,4 +21,6 @@
     <color name="light_red">#e26d2e</color>
     <color name="title_black">#222222</color>
     <color name="grey_search">#FF999999</color>
+
+    <color name="transparent">#00000000</color>
 </resources>

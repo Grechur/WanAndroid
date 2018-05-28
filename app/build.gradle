@@ -70,4 +70,6 @@ dependencies {
     compile "org.greenrobot:greendao:$rootProject.greenDao"
 
     implementation 'com.google.code.gson:gson:2.8.4'
+
+    compile 'com.beloo.widget:ChipsLayoutManager:0.3.7@aar'
 }

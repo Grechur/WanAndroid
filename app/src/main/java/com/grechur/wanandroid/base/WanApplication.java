@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 //import com.grechur.wanandroid.utils.GreenDaoHelper;
+import com.grechur.wanandroid.utils.GreenDaoHelper;
 import com.grechur.wanandroid.utils.Utils;
 
 /**
@@ -21,7 +22,7 @@ public class WanApplication extends Application{
         super.onCreate();
         Utils.init(this);
         app = this;
-//        GreenDaoHelper.initDatabase(this);
+        GreenDaoHelper.initDatabase(this);
     }
     @Override
     protected void attachBaseContext(Context base) {

@@ -23,7 +23,7 @@ public class NavigationPresenter extends BasePresenter<NavigationContract.INavig
         getView().onLoading();
 
         model.getNavigation().subscribeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DefaultObserver<BasicResponse<List<NaviArticle>>>() {
                     @Override
                     public void onSuccess(BasicResponse<List<NaviArticle>> response) {

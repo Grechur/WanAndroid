@@ -110,4 +110,8 @@ public interface IdeaApiService {
     @GET("hotkey/json")
     Observable<BasicResponse<List<History>>> getHotCode();
 
+    //http://www.wanandroid.com/article/query/0/json
+    @POST("article/query/{page}/json")
+    @FormUrlEncoded
+    Observable<BasicResponse<MainArticle>> getSearchList(@Path("page") int page, @Field("k") String k);
 }
