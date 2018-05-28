@@ -32,6 +32,7 @@ public class LoginActivity  extends BaseMvpActivity<UserInfoPresenter> implement
     @Override
     protected void initView() {
         unbinder = ButterKnife.bind(this);
+
     }
 
     @Override
@@ -59,6 +60,8 @@ public class LoginActivity  extends BaseMvpActivity<UserInfoPresenter> implement
     @Override
     public void onSucceed(UserInfo userInfo) {
         text.setText(userInfo.toString());
+        mAccountMgr.putString("username",userInfo.username);
+        mAccountMgr.putString("password",userInfo.password);
     }
 
     @Override

@@ -25,11 +25,13 @@ import android.widget.TextView;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.grechur.wanandroid.R;
+import com.grechur.wanandroid.aop.LoginCheck;
 import com.grechur.wanandroid.ui.fragment.HistoryFragment;
 import com.grechur.wanandroid.ui.fragment.HomeFragment;
 import com.grechur.wanandroid.ui.fragment.KnowledgeFragment;
 import com.grechur.wanandroid.ui.fragment.NavigationFragment;
 import com.grechur.wanandroid.ui.fragment.ProjectFragment;
+import com.grechur.wanandroid.utils.LogUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -173,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
 
     }
 
+
     @OnClick({R.id.iv_back,R.id.iv_search})
     void onClick(View view){
         switch (view.getId()){
@@ -186,4 +189,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         }
     }
 
+    @LoginCheck
+    public void onLogin(View view){
+        LogUtils.e("onLogin");
+    }
 }

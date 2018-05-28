@@ -1,5 +1,18 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
+import org.aspectj.bridge.IMessage
+import org.aspectj.bridge.MessageHandler
+import org.aspectj.tools.ajc.Main
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.aspectj:aspectjtools:1.9.1'
+        classpath 'org.aspectj:aspectjweaver:1.9.1'
+    }
+}
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -31,9 +44,49 @@ android {
     }
 
 }
+final def log = project.logger
+final def variants = project.android.applicationVariants
+variants.all { variant ->
+    if (!variant.buildType.isDebuggable()) {
+        log.debug("Skipping non-debuggable build type '${variant.buildType.name}'.")
+        return;
+    }
 
+    JavaCompile javaCompile = variant.javaCompile
+    javaCompile.doLast {
+        String[] args = ["-showWeaveInfo",
+                         "-1.8",
+                         "-inpath", javaCompile.destinationDir.toString(),
+                         "-aspectpath", javaCompile.classpath.asPath,
+                         "-d", javaCompile.destinationDir.toString(),
+                         "-classpath", javaCompile.classpath.asPath,
+                         "-bootclasspath", project.android.bootClasspath.join(File.pathSeparator)]
+        log.debug "ajc args: " + Arrays.toString(args)
+
+        MessageHandler handler = new MessageHandler(true);
+        new Main().run(args, handler);
+        for (IMessage message : handler.getMessages(null, true)) {
+            switch (message.getKind()) {
+                case IMessage.ABORT:
+                case IMessage.ERROR:
+                case IMessage.FAIL:
+                    log.error message.message, message.thrown
+                    break;
+                case IMessage.WARNING:
+                    log.warn message.message, message.thrown
+                    break;
+                case IMessage.INFO:
+                    log.info message.message, message.thrown
+                    break;
+                case IMessage.DEBUG:
+                    log.debug message.message, message.thrown
+                    break;
+            }
+        }
+    }
+}
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'com.android.support:support-v4:27.1.1'
@@ -42,7 +95,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
     compile "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     compile "com.squareup.retrofit2:retrofit-mock:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
@@ -50,10 +102,8 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjavaVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
     implementation "com.tbruyelle.rxpermissions2:rxpermissions:$rootProject.rxpermissions"
-
     implementation "com.jakewharton:butterknife:$rootProject.butterknife"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknife"
-
     // okhttp 3
     implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttpVersion"
     debugImplementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpVersion"
@@ -61,15 +111,11 @@ dependencies {
     implementation "com.ashokvarma.android:bottom-navigation-bar:$rootProject.bottomnavigation"
     //魅族广告栏
     implementation 'com.github.pinguo-zhouwei:MZBannerView:v2.0.1'
-
     implementation 'com.github.Grechur:SelectPicture:v1.0'
-
     implementation "com.android.support:multidex:$rootProject.multiVersion"
-
     //数据库
     compile "org.greenrobot:greendao:$rootProject.greenDao"
-
     implementation 'com.google.code.gson:gson:2.8.4'
-
     compile 'com.beloo.widget:ChipsLayoutManager:0.3.7@aar'
+    implementation files('libs/aspectjrt.jar')
 }
