@@ -17,6 +17,20 @@ public class History {
     public int order;
     public int visible;
     public boolean isTitle;
+
+    @Override
+    public String toString() {
+        return "History{" +
+                "icon='" + icon + '\'' +
+                ", id=" + id +
+                ", link='" + link + '\'' +
+                ", name='" + name + '\'' +
+                ", order=" + order +
+                ", visible=" + visible +
+                ", isTitle=" + isTitle +
+                '}';
+    }
+
     @Generated(hash = 49438406)
     public History(String icon, Long id, String link, String name, int order,
             int visible, boolean isTitle) {

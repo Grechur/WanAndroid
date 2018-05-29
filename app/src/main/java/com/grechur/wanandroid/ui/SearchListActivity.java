@@ -1,10 +1,14 @@
 package com.grechur.wanandroid.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
+import android.util.ArraySet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -26,6 +30,7 @@ import com.grechur.wanandroid.view.WrapRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,7 +39,9 @@ import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
@@ -46,14 +53,17 @@ public class SearchListActivity extends BaseMvpActivity<SearchPresenter> impleme
     TextView search_tv;
     @BindView(R.id.search_edit)
     EditText search_edit;
+    @BindView(R.id.sw_refresh)
+    SwipeRefreshLayout sw_refresh;
 
     private Unbinder unbinder;
     private String mKey;
+    private Long mId;
     
     private HomeFrgAdapter mHomeFrgAdapter;
     private List<Article> mData;
-
-    private HistoryDao mHistoryDao;
+    private List<History> mHistory;
+    View loadView = null;
 
     @Override
     protected void setContentView() {
@@ -65,13 +75,15 @@ public class SearchListActivity extends BaseMvpActivity<SearchPresenter> impleme
         return new SearchPresenter();
     }
 
+    @SuppressLint("NewApi")
     @Override
     protected void initView() {
         unbinder = ButterKnife.bind(this);
         mKey = getIntent().getStringExtra(Constant.INTENT_KEY);
+        mId = getIntent().getLongExtra(Constant.INTENT_ID,-1);
+        search_edit.setText(mKey);
 
-        mHistoryDao = GreenDaoHelper.getDaoSession().getHistoryDao();
-        
+        loadView = LayoutInflater.from(this).inflate(R.layout.loading_view,null);
         search_recycle_view.setLayoutManager(new LinearLayoutManager(this));
 
         mData = new ArrayList<>();
@@ -79,6 +91,8 @@ public class SearchListActivity extends BaseMvpActivity<SearchPresenter> impleme
         
         search_recycle_view.setAdapter(mHomeFrgAdapter);
 
+        if(loadView!=null)
+            search_recycle_view.addLoadingView(loadView);
 
         search_recycle_view.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -90,12 +104,22 @@ public class SearchListActivity extends BaseMvpActivity<SearchPresenter> impleme
                 startActivity(intent);
             }
         });
+        sw_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getPresenter().getSearchList(0,mKey);
+            }
+        });
+        sw_refresh.setRefreshing(true);
     }
 
     @Override
     protected void initData() {
         getPresenter().getSearchList(0,mKey);
+        setHistory(mKey,mId);
+        getHistory();
     }
+
     @Override
     public void onLoading() {
 
@@ -108,7 +132,10 @@ public class SearchListActivity extends BaseMvpActivity<SearchPresenter> impleme
 
     @Override
     public void unLoading() {
-
+        if(sw_refresh.isRefreshing()) {
+            sw_refresh.setRefreshing(false);
+            mData.clear();
+        }
     }
 
     @Override
@@ -118,6 +145,7 @@ public class SearchListActivity extends BaseMvpActivity<SearchPresenter> impleme
 
     @Override
     public void onSuccess(MainArticle mainArticle) {
+        unLoading();
         List<Article> articles = mainArticle.datas;
         if(articles!=null&&articles.size()>0){
             mData.addAll(articles);
@@ -131,9 +159,12 @@ public class SearchListActivity extends BaseMvpActivity<SearchPresenter> impleme
         switch (view.getId()){
             case R.id.search_tv:
                 String key = search_edit.getText().toString().trim();
-                if(!key.equals(mKey))
-                getPresenter().getSearchList(0,key);
-                setHistory(key);
+                if(!key.equals(mKey)){
+                    getPresenter().getSearchList(0,key);
+                    mKey = key;
+                }
+                mId = getIdByKey(key);
+                setHistory(key,mId);
                 break;
             case R.id.search_back_ib:
                 onBackPressed();
@@ -147,36 +178,57 @@ public class SearchListActivity extends BaseMvpActivity<SearchPresenter> impleme
         unbinder.unbind();
     }
 
-    public void setHistory(String key){
-        History history = new History();
-        history.name = key;
-        history.id = new Long(3);
-        insertHistory(history).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(Boolean aBoolean) throws Exception {
-                    }
-                });
+    public void setHistory(String key,Long id){
+        if(!TextUtils.isEmpty(key)){
+            History history = new History();
+            history.name = key;
+
+            if(id != -1) history.id = id;
+
+            GreenDaoHelper.insertHistory(history).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<Boolean>() {
+                        @Override
+                        public void accept(Boolean aBoolean) throws Exception {
+                        }
+                    });
+        }
+
     }
 
-    public Observable<Boolean> insertHistory(History history){
-        return Observable.create(new ObservableOnSubscribe<Boolean>() {
-            @Override
-            public void subscribe(ObservableEmitter<Boolean> e) throws Exception {
-                if(history!=null){
-                    Long id = mHistoryDao.insertOrReplace(history);
-                    if(id==history.id){
-                        e.onNext(true);
-                    }else {
-                        e.onNext(false);
-                    }
-                    e.onComplete();
-                }else{
-                    e.onNext(false);
-                    e.onComplete();
-                }
+    public Long getIdByKey(String key){
+        Long id = Long.valueOf(-1);
+        for (History history : mHistory) {
+            if (key.equals(history.name)) {
+                id = history.id;
+                break;
             }
-        });
+        }
+        return id;
+    }
+    public void getHistory(){
+        GreenDaoHelper.queryHistory().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<History>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<History> histories) {
+                        mHistory = histories;
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

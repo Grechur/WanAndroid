@@ -183,6 +183,11 @@ public class WrapRecyclerView extends RecyclerView {
         }
     }
 
+    @Override
+    public void onScreenStateChanged(int screenState) {
+        super.onScreenStateChanged(screenState);
+    }
+
     /***************
      * 给条目设置点击和长按事件
      *********************/

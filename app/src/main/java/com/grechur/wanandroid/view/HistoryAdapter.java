@@ -26,7 +26,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyHolder
 
     private Context mContext;
     private List<History> mData;
-    private OnItemClickListen onItemClickListen;
+    private OnItemClickListener onItemClickListen;
 
     public HistoryAdapter(Context context,List<History> data){
         this.mContext = context;
@@ -37,6 +37,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyHolder
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = null;
+        //根据类型不同加载不同页面
         if(viewType == 0){
             view = LayoutInflater.from(mContext).inflate(R.layout.navigation_flow_item,parent,false);
         }else{
@@ -53,9 +54,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!mData.get(position).isTitle){
-                    onItemClickListen.onItemClick(v,position);
-                }
+                onItemClickListen.onItemClick(position);
             }
         });
     }
@@ -67,6 +66,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyHolder
 
     @Override
     public int getItemViewType(int position) {
+        //通过设置isTitle来判断加载的项的类型
         if(mData.get(position).isTitle) return 1;
         return 0;
     }
@@ -87,11 +87,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyHolder
         }
     }
 
-    public void setItemClickListen(OnItemClickListen onItemClickListen){
+    public void setItemClickListen(OnItemClickListener onItemClickListen){
         this.onItemClickListen = onItemClickListen;
     }
 
-    public interface OnItemClickListen{
-        void onItemClick(View view, int position);
-    }
+
 }

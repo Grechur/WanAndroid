@@ -16,6 +16,7 @@ import com.grechur.wanandroid.contract.HistoryContract;
 import com.grechur.wanandroid.model.entity.home.History;
 import com.grechur.wanandroid.model.entity.home.HistoryDao;
 import com.grechur.wanandroid.presenter.HistoryPresenter;
+import com.grechur.wanandroid.ui.MainActivity;
 import com.grechur.wanandroid.ui.SearchListActivity;
 import com.grechur.wanandroid.ui.WebViewActivity;
 import com.grechur.wanandroid.utils.Constant;
@@ -50,18 +51,25 @@ import io.reactivex.schedulers.Schedulers;
 public class HistoryFragment extends BaseDialogFragment<HistoryPresenter> implements HistoryContract.IHistoryView{
 
     @BindView(R.id.history_recycle_view)
-    WrapRecyclerView history_recycle_view;
+    WrapRecyclerView history_recycle_view;//自定义RecyclerView
     @BindView(R.id.search_edit)
     EditText search_edit;
     @BindView(R.id.search_tv)
     TextView search_tv;
     @BindView(R.id.search_back_ib)
-    ImageView search_back_ib;
+    ImageView search_back_ib;//返回按钮
 
+    //适配器
     private HistoryAdapter mHistoryAdapter;
+    //数据
     private List<History> mData;
-
-    private HistoryDao mHistoryDao;
+    //数据库中的数据
+    private List<History> mHistory;
+    //列表标题集合
+    private List<String> mTitles;
+    //得到常用网站的下标，-1还没加载，0第一个加载完成，大于0说明数据库数据先拿
+    private int index = -1;
+    //butterknife
     private Unbinder unbinder;
 
     @Override
@@ -77,29 +85,39 @@ public class HistoryFragment extends BaseDialogFragment<HistoryPresenter> implem
     @Override
     protected void initView(View view) {
         unbinder = ButterKnife.bind(this,view);
-        ChipsLayoutManager layoutManager = ChipsLayoutManager.newBuilder(getContext()).build();
+        //初始化布局管理器
+        ChipsLayoutManager layoutManager = ChipsLayoutManager.newBuilder(getActivity()).build();
+        //recycleview的设置
         history_recycle_view.setLayoutManager(layoutManager);
         history_recycle_view.addItemDecoration(new DividerGridItemDecoration(getActivity(),R.drawable.line_drawable));
-        mHistoryDao = GreenDaoHelper.getDaoSession().getHistoryDao();
+        //数组初始化
         mData = new ArrayList<>();
+        mHistory= new ArrayList<>();
+        mTitles = new ArrayList<>();
+        //适配器初始化
         mHistoryAdapter = new HistoryAdapter(getActivity(),mData);
 
         history_recycle_view.setAdapter(mHistoryAdapter);
         history_recycle_view.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                ToastUtils.show(position+"被点击");
-                Intent intent = new Intent();
-                if(TextUtils.isEmpty(mData.get(position).link)){
-                    intent.setClass(getActivity(), SearchListActivity.class);
-                    intent.putExtra(Constant.INTENT_KEY,mData.get(position).name);
-                    setHistory(mData.get(position).name);
-                }else{
-                    intent.setClass(getActivity(), WebViewActivity.class);
-                    intent.putExtra(Constant.INTENT_URL,mData.get(position).link);
-                    intent.putExtra(Constant.INTENT_TITLE,mData.get(position).name);
+//                ToastUtils.show(position+"被点击");
+                //不是标题才能点击
+                if(!mData.get(position).isTitle) {
+                    Intent intent = new Intent();
+                    //数据是否有链接
+                    if (TextUtils.isEmpty(mData.get(position).link)) {
+                        Long id = getIdByKey(mData.get(position).name);
+                        intent.setClass(getActivity(), SearchListActivity.class);
+                        intent.putExtra(Constant.INTENT_KEY, mData.get(position).name);//搜素字段
+                        intent.putExtra(Constant.INTENT_ID, id);//数据库中该搜索字段的id -1不存在
+                    } else {
+                        intent.setClass(getActivity(), WebViewActivity.class);
+                        intent.putExtra(Constant.INTENT_URL, mData.get(position).link);//跳转到网页
+                        intent.putExtra(Constant.INTENT_TITLE, mData.get(position).name);
+                    }
+                    getActivity().startActivity(intent);
                 }
-                getActivity().startActivity(intent);
             }
         });
     }
@@ -111,11 +129,18 @@ public class HistoryFragment extends BaseDialogFragment<HistoryPresenter> implem
 
     @Override
     protected void initData() {
-        getHistory();
+        //获取热词
         getPresenter().getHotCode();
+        //获取常用网站
         getPresenter().getMostUse();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        //获取数据库数据，回来时能及时更新
+        getHistory();
+    }
 
     @Override
     public void onLoading() {
@@ -139,12 +164,16 @@ public class HistoryFragment extends BaseDialogFragment<HistoryPresenter> implem
             case R.id.search_tv:
                 String key = search_edit.getText().toString().trim();
                 if(!TextUtils.isEmpty(key)){
+                    Long id = getIdByKey(key);
+
                     Intent intent = new Intent();
                     intent.setClass(getActivity(), SearchListActivity.class);
                     intent.putExtra(Constant.INTENT_KEY,key);
+                    if(id!=-1){
+                        intent.putExtra(Constant.INTENT_ID,id);
+                    }
                     getActivity().startActivity(intent);
                 }
-                setHistory(key);
                 break;
             case R.id.search_back_ib:
                 dismiss();
@@ -159,6 +188,7 @@ public class HistoryFragment extends BaseDialogFragment<HistoryPresenter> implem
         if(data !=null){
             data.add(0,history);
             mData.addAll(data);
+            index = mData.indexOf(history);
             mHistoryAdapter.notifyDataSetChanged();
         }
     }
@@ -169,27 +199,17 @@ public class HistoryFragment extends BaseDialogFragment<HistoryPresenter> implem
 
         if(data !=null){
             data.add(0,history);
-            mData.addAll(data);
+            if(index>=0) mData.addAll(index,data);
+            if(index == -1) mData.addAll(data);
             mHistoryAdapter.notifyDataSetChanged();
         }
     }
 
-    public void setHistory(String key){
-        History history = new History();
-        history.id = new Long(2);
-        history.name = key;
-
-        insertHistory(history).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(Boolean aBoolean) throws Exception {
-                    }
-                });
-    }
-
+    /**
+     * 获取数据库数据
+     */
     public void getHistory(){
-        queryHistory().subscribeOn(Schedulers.io())
+        GreenDaoHelper.queryHistory().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<History>>() {
                     @Override
@@ -199,11 +219,13 @@ public class HistoryFragment extends BaseDialogFragment<HistoryPresenter> implem
 
                     @Override
                     public void onNext(List<History> histories) {
-                        History history = getTitleHistory("历史记录");
-
-                        histories.add(0,history);
-                        mData.addAll(0,histories);
-                        mHistoryAdapter.notifyDataSetChanged();
+                        mHistory = histories;
+                        if(!mTitles.contains("历史记录")) {
+                            History history = getTitleHistory("历史记录");
+                            histories.add(0, history);
+                            mData.addAll(0, histories);
+                            mHistoryAdapter.notifyDataSetChanged();
+                        }
                     }
 
                     @Override
@@ -218,52 +240,40 @@ public class HistoryFragment extends BaseDialogFragment<HistoryPresenter> implem
                 });
     }
 
+    /**
+     * 设置标题项
+     * @param s
+     * @return
+     */
     public History getTitleHistory(String s){
         History history = new History();
         history.isTitle = true;
         history.name = s;
+        mTitles.add(s);
         return history;
     }
 
-    public Observable<List<History>> queryHistory(){
-
-        return Observable.create(new ObservableOnSubscribe<List<History>>() {
-            @Override
-            public void subscribe(ObservableEmitter<List<History>> e) throws Exception {
-                List<History> historyList = mHistoryDao.queryBuilder().list();
-                if(historyList!=null&&historyList.size()>0){
-                    e.onNext(historyList);
-                    e.onComplete();
-                }else{
-                    e.onError(new Throwable("数据库中没数据"));
-                }
-            }
-        });
-    }
-
-    public Observable<Boolean> insertHistory(History history){
-        return Observable.create(new ObservableOnSubscribe<Boolean>() {
-            @Override
-            public void subscribe(ObservableEmitter<Boolean> e) throws Exception {
-                if(history!=null){
-                    Long id = mHistoryDao.insertOrReplace(history);
-                    if(id==history.id){
-                        e.onNext(true);
-                    }else {
-                        e.onNext(false);
-                    }
-                    e.onComplete();
-                }else{
-                    e.onNext(false);
-                    e.onComplete();
-                }
-            }
-        });
-    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         unbinder.unbind();
+    }
+
+    /**
+     * 通过文字查找数据是否在数据库
+     * @param key
+     * @return
+     */
+    public Long getIdByKey(String key){
+        Long id = Long.valueOf(-1);
+        for (History history : mHistory) {
+            if (key.equals(history.name)) {
+                id = history.id;
+                break;
+            }
+        }
+        return id;
     }
 }

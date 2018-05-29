@@ -10,8 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.grechur.wanandroid.R;
+import com.grechur.wanandroid.aop.LoginCheck;
 import com.grechur.wanandroid.model.entity.Article;
 import com.grechur.wanandroid.utils.DateUtil;
+import com.grechur.wanandroid.utils.ToastUtils;
 import com.grechur.wanandroid.view.adapter.FlowAdapter;
 
 import java.util.List;
@@ -44,7 +46,7 @@ public class HomeFrgAdapter extends RecyclerView.Adapter<HomeFrgAdapter.MyViewHo
         Article article = mDatas.get(position);
         holder.tv_title.setText(article.title==null?"":article.title);
         holder.tv_author.setText(article.author==null?"":"作者："+article.author);
-        holder.tv_type.setText(article.superChapterName==null?"":"tv_time"+article.superChapterName);
+        holder.tv_type.setText(article.superChapterName==null?"":"分类："+article.superChapterName);
         long time = article.publishTime;
         String date = DateUtil.getDay(time);
         holder.tv_time.setText("时间："+article.niceDate);
@@ -54,6 +56,26 @@ public class HomeFrgAdapter extends RecyclerView.Adapter<HomeFrgAdapter.MyViewHo
                 onItemClickListen.onItemClick(v,position);
             }
         });
+        holder.iv_zan.setOnClickListener(new OnViewClick(holder,position) );
+    }
+
+    public class OnViewClick implements View.OnClickListener {
+        private MyViewHolder holder;
+        private int position;
+        public OnViewClick(MyViewHolder holder, int position) {
+            this.holder = holder;
+            this.position = position;
+        }
+
+        @LoginCheck
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.iv_zan:
+                    ToastUtils.show("jinlaile");
+                    break;
+            }
+        }
     }
 
     @Override
@@ -69,6 +91,7 @@ public class HomeFrgAdapter extends RecyclerView.Adapter<HomeFrgAdapter.MyViewHo
         TextView tv_author;
         TextView tv_type;
         TextView tv_time;
+        ImageView iv_zan;
 
         public MyViewHolder(View view)
         {
@@ -78,7 +101,7 @@ public class HomeFrgAdapter extends RecyclerView.Adapter<HomeFrgAdapter.MyViewHo
             tv_author = view.findViewById(R.id.tv_author);
             tv_type = view.findViewById(R.id.tv_type);
             tv_time = view.findViewById(R.id.tv_time);
-
+            iv_zan = view.findViewById(R.id.iv_zan);
         }
     }
     public void setItemClickListen(FlowAdapter.OnItemClickListen onItemClickListen){

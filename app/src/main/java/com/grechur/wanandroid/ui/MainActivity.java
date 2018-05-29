@@ -112,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         toggle.syncState();
         mDrawerLayout.addDrawerListener(toggle);
 
-        mHistoryFragment = new HistoryFragment();
 
 }
 
@@ -160,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
                 transaction.replace(R.id.fragment_container,mProjectFragment);
 
                 transaction.commit();
+
                 break;
         }
     }
@@ -181,10 +181,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         switch (view.getId()){
             case R.id.iv_search:
                 FragmentTransaction transaction = mFragmentManager.beginTransaction();
-                if(mHistoryFragment==null){
-                    mHistoryFragment = new HistoryFragment();
+                mHistoryFragment = new HistoryFragment();
+                if (!mHistoryFragment.isAdded()) {
+                    mHistoryFragment.show(transaction,"HistoryFragment");
                 }
-                mHistoryFragment.show(transaction,"SearchDialogFragment");
+
                 break;
         }
     }
@@ -193,4 +194,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     public void onLogin(View view){
         LogUtils.e("onLogin");
     }
+
+
 }
