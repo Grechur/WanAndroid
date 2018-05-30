@@ -15,4 +15,13 @@
     <string name="navigation_drawer_close">关闭</string>
 
     <string name="scale_down_show_behavior">com.grechur.wanandroid.view.widget.BottomNavigationBehavior</string>
+
+    <string name="my_collect">Collect</string>
+    <string name="about_us">About Us</string>
+    <string name="logout">Login out</string>
+    <string name="setting">Setting</string>
+
+    <string name="ok">确定</string>
+    <string name="no">取消</string>
+    <string name="logout_tint">确定登出？</string>
 </resources>

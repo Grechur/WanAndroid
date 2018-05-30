@@ -2,6 +2,9 @@ package com.grechur.wanandroid.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -10,14 +13,22 @@ import com.grechur.wanandroid.base.BaseMvpActivity;
 import com.grechur.wanandroid.contract.UserInfoContract;
 import com.grechur.wanandroid.model.entity.UserInfo;
 import com.grechur.wanandroid.presenter.UserInfoPresenter;
+import com.grechur.wanandroid.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class LoginActivity  extends BaseMvpActivity<UserInfoPresenter> implements UserInfoContract.IUserInfoView {
-    @BindView(R.id.text)
-    TextView text;
+    @BindView(R.id.et_username)
+    EditText et_username;
+    @BindView(R.id.et_password)
+    EditText et_password;
+    @BindView(R.id.btn_login)
+    Button btn_login;
+    @BindView(R.id.btn_up)
+    Button btn_up;
     Unbinder unbinder;
     @Override
     protected void setContentView() {
@@ -37,7 +48,7 @@ public class LoginActivity  extends BaseMvpActivity<UserInfoPresenter> implement
 
     @Override
     protected void initData() {
-        getPresenter().getUsers("Grechur","zz124578");
+
     }
 
 
@@ -59,9 +70,23 @@ public class LoginActivity  extends BaseMvpActivity<UserInfoPresenter> implement
 
     @Override
     public void onSucceed(UserInfo userInfo) {
-        text.setText(userInfo.toString());
+//        text.setText(userInfo.toString());
         mAccountMgr.putString("username",userInfo.username);
         mAccountMgr.putString("password",userInfo.password);
+    }
+
+    @OnClick({R.id.btn_login,R.id.btn_up})
+    void onClick(View view){
+        switch (view.getId()){
+            case R.id.btn_login:
+                String username = et_username.getText().toString().trim();
+                String pwd = et_password.getText().toString().trim();
+                getPresenter().getUsers(username,pwd);
+                break;
+            case R.id.btn_up:
+                ToastUtils.show("这里就懒得做了");
+                break;
+        }
     }
 
     @Override

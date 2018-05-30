@@ -2,6 +2,7 @@ package com.grechur.wanandroid.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
@@ -16,6 +17,9 @@ import com.grechur.wanandroid.utils.ToastUtils;
 import com.grechur.wanandroid.view.KnowledgeAdapter;
 import com.grechur.wanandroid.view.OnItemClickListener;
 import com.grechur.wanandroid.view.WrapRecyclerView;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,13 +33,17 @@ import butterknife.Unbinder;
  */
 
 public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implements KnowledgeContract.IKnowledgeView{
-    @BindView(R.id.knowledge_recycler_view)
+    @BindView(R.id.wrawp_recycler_view)
     WrapRecyclerView knowledge_recycler_view;
+    @BindView(R.id.smart_refresh)
+    RefreshLayout smart_refresh;
 
     private KnowledgeAdapter mKnowledgeAdapter;
     private List<Knowledge> mKnowledge;
 
     Unbinder unbinder;
+    private int page = 0;
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_knowledge;
@@ -74,6 +82,16 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
                 getActivity().startActivity(intent);
             }
         });
+        smart_refresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page = 0;
+                getPresenter().getKnowledges();
+            }
+        });
+        smart_refresh.setEnableLoadMore(false);
+        //触发自动刷新
+        smart_refresh.autoRefresh();
     }
 
     @Override
@@ -104,6 +122,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
 
     @Override
     public void onSucceed(List<Knowledge> knowledges) {
+        mKnowledge.clear();
         mKnowledge.addAll(knowledges);
         mKnowledgeAdapter.notifyDataSetChanged();
     }

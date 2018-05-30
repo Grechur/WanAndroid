@@ -2,6 +2,7 @@ package com.grechur.wanandroid.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
@@ -22,6 +23,9 @@ import com.grechur.wanandroid.view.KnowledgeAdapter;
 import com.grechur.wanandroid.view.OnItemClickListener;
 import com.grechur.wanandroid.view.ProjectDataAdapter;
 import com.grechur.wanandroid.view.WrapRecyclerView;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,15 +39,18 @@ import butterknife.Unbinder;
  */
 
 public class ProjectDataFragment extends BaseFragment<ProjectDataPresenter> implements ProjectDataContract.IProjectDataView{
-    @BindView(R.id.project_recycler_view)
+    @BindView(R.id.wrawp_recycler_view)
     WrapRecyclerView project_recycler_view;
-
+    @BindView(R.id.smart_refresh)
+    RefreshLayout smart_refresh;
     private int mCId;
 
 
     private ProjectDataAdapter mProjectDataAdapter;
     private List<ProjectInfo> mProjectInfo;
     private Unbinder unbinder;
+    private int page = 1;
+
     public static Fragment newInstance(int id){
         Fragment fragment=new ProjectDataFragment();
         Bundle bundle=new Bundle();
@@ -82,6 +89,22 @@ public class ProjectDataFragment extends BaseFragment<ProjectDataPresenter> impl
                 getActivity().startActivity(intent);
             }
         });
+        smart_refresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page = 1;
+                getPresenter().getProjectData(page,mCId);
+            }
+        });
+        smart_refresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                page++;
+                getPresenter().getProjectData(page,mCId);
+            }
+        });
+        //触发自动刷新
+        smart_refresh.autoRefresh();
     }
 
     @Override
@@ -107,13 +130,17 @@ public class ProjectDataFragment extends BaseFragment<ProjectDataPresenter> impl
     @Override
     public void onError(String code, String msg) {
         showToast(msg);
+        smart_refresh.finishRefresh();
+        smart_refresh.finishLoadMore();
     }
 
     @Override
     public void onSuccess(ProjectData projectData) {
+        if(page==1) mProjectInfo.clear();
         mProjectInfo.addAll(projectData.datas);
         mProjectDataAdapter.notifyDataSetChanged();
-
+        smart_refresh.finishRefresh();
+        smart_refresh.finishLoadMore();
     }
 
     @Override

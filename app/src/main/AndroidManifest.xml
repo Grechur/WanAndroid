@@ -9,9 +9,9 @@
     <application
         android:name=".base.WanApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_wan_android"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_wan_android"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -31,7 +31,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ui.WebViewActivity" />
         <activity android:name=".ui.KnowledgeProcActivity" />
-        <activity android:name=".ui.SearchListActivity"></activity>
+        <activity android:name=".ui.SearchListActivity" />
+        <activity android:name=".ui.AboutUsActivity"></activity>
     </application>
 
 </manifest>

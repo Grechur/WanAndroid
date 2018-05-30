@@ -2,18 +2,25 @@ package com.grechur.wanandroid.ui;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -31,7 +38,10 @@ import com.grechur.wanandroid.ui.fragment.HomeFragment;
 import com.grechur.wanandroid.ui.fragment.KnowledgeFragment;
 import com.grechur.wanandroid.ui.fragment.NavigationFragment;
 import com.grechur.wanandroid.ui.fragment.ProjectFragment;
+import com.grechur.wanandroid.utils.AccountMgr;
 import com.grechur.wanandroid.utils.LogUtils;
+import com.grechur.wanandroid.utils.ToastUtils;
+import com.grechur.wanandroid.view.CommonAlertDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +62,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     DrawerLayout mDrawerLayout;
     @BindView(R.id.tool_bar)
     Toolbar mToolbar;
+    @BindView(R.id.nav_view)
+    NavigationView mNavigationView;
+
+    private TextView mUsTv;
 
     private FragmentManager mFragmentManager;
     private HomeFragment mHomeFragment;
@@ -60,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     private ProjectFragment mProjectFragment;
     private HistoryFragment mHistoryFragment;
 
+    protected AccountMgr mAccountMgr;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         ButterKnife.bind(this);
 //        bottomNavigationBar = findViewById(R.id.bottom_navigation_bar);
         mFragmentManager = getSupportFragmentManager();
-
+        mAccountMgr = new AccountMgr(this);
 //        title = findViewById(R.id.title);
         iv_search.setImageDrawable(getResources().getDrawable(R.mipmap.search));
         bottomNavigationBar
@@ -112,8 +128,52 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         toggle.syncState();
         mDrawerLayout.addDrawerListener(toggle);
 
+        initNavi();
+    }
 
-}
+    private void initNavi() {
+        mUsTv = mNavigationView.getHeaderView(0).findViewById(R.id.nav_header_login_tv);
+        String username = mAccountMgr.getVal("username");
+        if (!TextUtils.isEmpty(username)) {
+            mUsTv.setText(username);
+            mNavigationView.getMenu().findItem(R.id.nav_item_logout).setVisible(true);
+        } else {
+            mUsTv.setText("登陆");
+            mNavigationView.getMenu().findItem(R.id.nav_item_logout).setVisible(false);
+        }
+
+        mNavigationView.getMenu().findItem(R.id.nav_item_wan_android)
+                .setOnMenuItemClickListener(item -> {
+                    mDrawerLayout.closeDrawers();
+                    return true;
+                });
+        mNavigationView.getMenu().findItem(R.id.nav_item_my_collect)
+                .setOnMenuItemClickListener(item -> {
+                    if (!TextUtils.isEmpty(username)) {
+                        ToastUtils.show("收藏");
+                        return true;
+                    } else {
+                        startActivity(new Intent(this, LoginActivity.class));
+                        return true;
+                    }
+                });
+        mNavigationView.getMenu().findItem(R.id.nav_item_about_us)
+                .setOnMenuItemClickListener(item -> {
+                    startActivity(new Intent(this, AboutUsActivity.class));
+                    return true;
+                });
+        mNavigationView.getMenu().findItem(R.id.nav_item_logout)
+                .setOnMenuItemClickListener(item -> {
+                    logout();
+                    return true;
+                });
+        mNavigationView.getMenu().findItem(R.id.nav_item_setting)
+                .setOnMenuItemClickListener(item -> {
+//                    startSettingFragment();
+                    ToastUtils.show("Setting");
+                    return true;
+                });
+    }
 
 
     @Override
@@ -175,7 +235,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
 
     }
 
-
     @OnClick({R.id.iv_back,R.id.iv_search})
     void onClick(View view){
         switch (view.getId()){
@@ -190,10 +249,45 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
         }
     }
 
-    @LoginCheck
-    public void onLogin(View view){
-        LogUtils.e("onLogin");
+
+    private void logout() {
+        CommonAlertDialog.newInstance().showDialog(
+                this, getString(R.string.logout_tint),
+                getString(R.string.ok),
+                getString(R.string.no),
+                v -> confirmLogout(),
+                v -> CommonAlertDialog.newInstance().cancelDialog(true));
     }
 
+    private void confirmLogout() {
+        CommonAlertDialog.newInstance().cancelDialog(true);
+        mNavigationView.getMenu().findItem(R.id.nav_item_logout).setVisible(false);
+        mAccountMgr.clear();
+        startActivity(new Intent(this, LoginActivity.class));
+    }
 
+    private long exitTime = 0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 1000) {
+                ToastUtils.show("再按一次退出程序");
+                exitTime = System.currentTimeMillis();
+                return false;
+            } else {
+                try {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_MAIN);
+                    intent.addCategory(Intent.CATEGORY_HOME);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

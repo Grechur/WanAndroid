@@ -3,6 +3,7 @@ package com.grechur.wanandroid.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.grechur.wanandroid.R;
+import com.grechur.wanandroid.aop.LoginCheck;
 import com.grechur.wanandroid.base.BaseFragment;
 import com.grechur.wanandroid.contract.HomeArticleContract;
 import com.grechur.wanandroid.model.entity.Article;
@@ -19,9 +21,13 @@ import com.grechur.wanandroid.model.entity.home.MainArticle;
 import com.grechur.wanandroid.presenter.HomeArticlePresenter;
 import com.grechur.wanandroid.ui.WebViewActivity;
 import com.grechur.wanandroid.utils.Constant;
+import com.grechur.wanandroid.utils.ToastUtils;
 import com.grechur.wanandroid.view.HomeFrgAdapter;
 import com.grechur.wanandroid.view.OnItemClickListener;
 import com.grechur.wanandroid.view.WrapRecyclerView;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhouwei.mzbanner.MZBannerView;
 import com.zhouwei.mzbanner.holder.MZHolderCreator;
 import com.zhouwei.mzbanner.holder.MZViewHolder;
@@ -37,7 +43,8 @@ import butterknife.Unbinder;
  * Created by zz on 2018/5/22.
  */
 
-public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements HomeArticleContract.IArticlesView{
+public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements HomeArticleContract.IArticlesView,
+        HomeFrgAdapter.OnItemClickListen, MZBannerView.BannerPageClickListener{
 
     private View headerView;
 
@@ -45,12 +52,16 @@ public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements 
 
     @BindView(R.id.wrawp_recycler_view)
     WrapRecyclerView mWrapRecyclerView;
+    @BindView(R.id.smart_refresh)
+    RefreshLayout smart_refresh;
 
     private HomeFrgAdapter mHomeFrgAdapter;
     private List<Article> mArticles;
 
     Unbinder unbinder;
     private List<BannerItem> mBanners;
+
+    private int page = 0;
 
     @Override
     protected void initView(View view) {
@@ -69,25 +80,34 @@ public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements 
         mWrapRecyclerView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Intent intent = new Intent();
-                intent.setClass(getActivity(), WebViewActivity.class);
-                intent.putExtra(Constant.INTENT_URL,mArticles.get(position).link);
-                intent.putExtra(Constant.INTENT_TITLE,mArticles.get(position).title);
-                getActivity().startActivity(intent);
+
             }
         });
 
-        mMZBanner.setBannerPageClickListener(new MZBannerView.BannerPageClickListener() {
+        mMZBanner.setBannerPageClickListener(this);
+        mHomeFrgAdapter.setItemClickListen(this);
+
+        smart_refresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onPageClick(View view, int i) {
-                Intent intent = new Intent();
-                intent.setClass(getActivity(), WebViewActivity.class);
-                intent.putExtra(Constant.INTENT_URL,mBanners.get(i).url);
-                intent.putExtra(Constant.INTENT_TITLE,mBanners.get(i).title);
-                getActivity().startActivity(intent);
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page = 0;
+                getPresenter().getArticles(page);
+                getPresenter().getBanner();
             }
         });
+        smart_refresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                page++;
+                getPresenter().getArticles(page);
+            }
+        });
+        //触发自动刷新
+        smart_refresh.autoRefresh();
     }
+
+
+
     @Override
     protected void initData() {
         getPresenter().getArticles(0);
@@ -116,12 +136,17 @@ public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements 
 
     @Override
     public void onError(String code, String msg) {
+        smart_refresh.finishRefresh();
+        smart_refresh.finishLoadMore();
         showToast(msg);
     }
 
     @Override
     public void onSucceed(MainArticle article) {
         Log.e("TAG",mHomeFrgAdapter.toString()+mWrapRecyclerView.toString());
+        if(page == 0) mArticles.clear();
+        smart_refresh.finishRefresh();
+        smart_refresh.finishLoadMore();
         if(article!=null){
             mArticles.addAll(article.datas);
         }
@@ -140,6 +165,25 @@ public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements 
         });
         mMZBanner.start();
     }
+
+    @LoginCheck
+    @Override
+    public void onItemClick(View view, int position) {
+        switch (view.getId()){
+            case R.id.iv_zan:
+                ToastUtils.show("jinlaile");
+                break;
+        }
+    }
+    @Override
+    public void onPageClick(View view, int position) {
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), WebViewActivity.class);
+        intent.putExtra(Constant.INTENT_URL,mArticles.get(position).link);
+        intent.putExtra(Constant.INTENT_TITLE,mArticles.get(position).title);
+        getActivity().startActivity(intent);
+    }
+
     public static class BannerViewHolder implements MZViewHolder<BannerItem> {
         private ImageView mImageView;
         @Override

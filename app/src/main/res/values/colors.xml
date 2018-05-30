@@ -23,4 +23,6 @@
     <color name="grey_search">#FF999999</color>
 
     <color name="transparent">#00000000</color>
+
+    <color name="comment_text">#5b5d5c</color>
 </resources>

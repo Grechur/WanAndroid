@@ -2,6 +2,7 @@ package com.grechur.wanandroid.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +28,9 @@ import com.grechur.wanandroid.utils.ToastUtils;
 import com.grechur.wanandroid.view.HomeFrgAdapter;
 import com.grechur.wanandroid.view.OnItemClickListener;
 import com.grechur.wanandroid.view.WrapRecyclerView;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,14 +51,14 @@ import io.reactivex.schedulers.Schedulers;
 
 public class SearchListActivity extends BaseMvpActivity<SearchPresenter> implements SearchListContract.ISearchView {
 
-    @BindView(R.id.search_recycle_view)
+    @BindView(R.id.wrawp_recycler_view)
     WrapRecyclerView search_recycle_view;
     @BindView(R.id.search_tv)
     TextView search_tv;
     @BindView(R.id.search_edit)
     EditText search_edit;
-    @BindView(R.id.sw_refresh)
-    SwipeRefreshLayout sw_refresh;
+    @BindView(R.id.smart_refresh)
+    RefreshLayout smart_refresh;
 
     private Unbinder unbinder;
     private String mKey;
@@ -64,6 +68,7 @@ public class SearchListActivity extends BaseMvpActivity<SearchPresenter> impleme
     private List<Article> mData;
     private List<History> mHistory;
     View loadView = null;
+    private int page;
 
     @Override
     protected void setContentView() {
@@ -104,13 +109,22 @@ public class SearchListActivity extends BaseMvpActivity<SearchPresenter> impleme
                 startActivity(intent);
             }
         });
-        sw_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        smart_refresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRefresh() {
-                getPresenter().getSearchList(0,mKey);
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                page = 0;
+                getPresenter().getSearchList(page,mKey);
             }
         });
-        sw_refresh.setRefreshing(true);
+        smart_refresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                page++;
+                getPresenter().getSearchList(page,mKey);
+            }
+        });
+        //触发自动刷新
+        smart_refresh.autoRefresh();
     }
 
     @Override
@@ -132,27 +146,27 @@ public class SearchListActivity extends BaseMvpActivity<SearchPresenter> impleme
 
     @Override
     public void unLoading() {
-        if(sw_refresh.isRefreshing()) {
-            sw_refresh.setRefreshing(false);
-            mData.clear();
-        }
+
     }
 
     @Override
     public void onError(String code, String msg) {
         showToast(msg);
+        smart_refresh.finishRefresh();
+        smart_refresh.finishLoadMore();
     }
 
     @Override
     public void onSuccess(MainArticle mainArticle) {
-        unLoading();
+        if(page == 0) mData.clear();
         List<Article> articles = mainArticle.datas;
         if(articles!=null&&articles.size()>0){
             mData.addAll(articles);
             mHomeFrgAdapter.notifyDataSetChanged();
         }
 
-
+        smart_refresh.finishRefresh();
+        smart_refresh.finishLoadMore();
     }
     @OnClick({R.id.search_tv,R.id.search_back_ib})
     void onClick(View view){
