@@ -1,5 +1,6 @@
 package com.grechur.wanandroid.ui;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
@@ -8,25 +9,46 @@ import android.view.WindowManager;
 
 import com.grechur.wanandroid.R;
 
-public class SplashActivity extends AppCompatActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import yanzhikai.textpath.AsyncTextPathView;
+import yanzhikai.textpath.PathAnimatorListener;
+import yanzhikai.textpath.SyncTextPathView;
 
+public class SplashActivity extends AppCompatActivity {
+    SyncTextPathView stpv_2017;
+    AsyncTextPathView atpv_1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        CountDownTimer countDownTimer = new CountDownTimer(2000,1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-            }
 
+        stpv_2017 = findViewById(R.id.stpv_2017);
+        atpv_1 = findViewById(R.id.atpv_1);
+        stpv_2017.startAnimation(0,1);
+        atpv_1.startAnimation(0,1);
+        stpv_2017.setAnimatorListener(new PathAnimatorListener(){
             @Override
-            public void onFinish() {
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
                 startActivity(new Intent(SplashActivity.this,MainActivity.class));
                 finish();
             }
-        };
-        countDownTimer.start();
+        });
+
+//        CountDownTimer countDownTimer = new CountDownTimer(2100,1000) {
+//            @Override
+//            public void onTick(long millisUntilFinished) {
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                startActivity(new Intent(SplashActivity.this,MainActivity.class));
+//                finish();
+//            }
+//        };
+//        countDownTimer.start();
     }
 }

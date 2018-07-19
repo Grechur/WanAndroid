@@ -121,4 +121,7 @@ dependencies {
 
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-6'
     compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-6'//没有使用特殊Header，可以不加这行
+
+    //完整版引入
+    compile 'com.yanzhikai:TextPathView:0.1.2'
 }

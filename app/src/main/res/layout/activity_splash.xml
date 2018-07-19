@@ -1,10 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/splash"
+    android:orientation="vertical"
     tools:context="com.grechur.wanandroid.ui.SplashActivity">
+    <yanzhikai.textpath.SyncTextPathView
+        android:id="@+id/stpv_2017"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:duration="2000"
+        app:showPainter="true"
+        app:text="WAN"
+        app:paintStrokeColor="@color/colorPrimary"
+        app:textInCenter="true"
+        app:textSize="60sp"
+        app:pathStrokeColor="@color/colorAccent"
+        android:layout_marginTop="100dp"
+        />
 
-</android.support.constraint.ConstraintLayout>
+    <yanzhikai.textpath.AsyncTextPathView
+        android:id="@+id/atpv_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:duration="2000"
+        app:showPainter="true"
+        app:text="ANDROID"
+        app:paintStrokeColor="@color/colorPrimary"
+        app:pathStrokeColor="@color/colorAccent"
+        app:textInCenter="true"
+        app:textSize="62sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        />
+</LinearLayout>

@@ -1,8 +1,10 @@
 package com.grechur.wanandroid.ui.fragment;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -59,6 +61,7 @@ public class HistoryFragment extends BaseDialogFragment<HistoryPresenter> implem
     @BindView(R.id.search_back_ib)
     ImageView search_back_ib;//返回按钮
 
+
     //适配器
     private HistoryAdapter mHistoryAdapter;
     //数据
@@ -111,12 +114,19 @@ public class HistoryFragment extends BaseDialogFragment<HistoryPresenter> implem
                         intent.setClass(getActivity(), SearchListActivity.class);
                         intent.putExtra(Constant.INTENT_KEY, mData.get(position).name);//搜素字段
                         intent.putExtra(Constant.INTENT_ID, id);//数据库中该搜索字段的id -1不存在
+
+                        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(),
+                                Pair.create(search_back_ib,"share"),
+                                Pair.create(search_tv,"share1"),
+                                Pair.create(search_edit,"share2"));
+                        getActivity().startActivity(intent,options.toBundle());
                     } else {
                         intent.setClass(getActivity(), WebViewActivity.class);
                         intent.putExtra(Constant.INTENT_URL, mData.get(position).link);//跳转到网页
                         intent.putExtra(Constant.INTENT_TITLE, mData.get(position).name);
+                        getActivity().startActivity(intent);
                     }
-                    getActivity().startActivity(intent);
+
                 }
             }
         });

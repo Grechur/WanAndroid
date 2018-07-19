@@ -7,7 +7,12 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
+    <style name="WelcomeTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:windowFullscreen">true</item>
+        <!--<item name="android:windowBackground">@mipmap/splash</item>//设置startWindow避免启动白屏的情况-->
+    </style>
     <style name="ToolbarTheme" parent="Theme.AppCompat.Light">
         <!-- 设置 toolbar 溢出菜单的文字的颜色 -->
         <item name="android:textColor">@android:color/holo_red_dark</item>
