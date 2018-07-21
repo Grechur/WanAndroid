@@ -1,5 +1,6 @@
 package com.grechur.wanandroid.ui;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.grechur.wanandroid.R;
 import com.grechur.wanandroid.utils.Constant;
+import com.grechur.wanandroid.view.CircleLoadView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +25,8 @@ import butterknife.Unbinder;
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class WebViewActivity extends AppCompatActivity {
 
+    @BindView(R.id.circle_view)
+    CircleLoadView circleLoadView;
     @BindView(R.id.wv_web)
     WebView webView;
     @BindView(R.id.title)
@@ -61,6 +65,19 @@ public class WebViewActivity extends AppCompatActivity {
 
         webView.loadUrl(mUrl);
         webView.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                circleLoadView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                circleLoadView.setVisibility(View.GONE);
+                circleLoadView.cancleAnimal();
+            }
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);

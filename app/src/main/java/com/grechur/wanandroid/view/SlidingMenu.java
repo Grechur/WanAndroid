@@ -248,6 +248,19 @@ public class SlidingMenu extends HorizontalScrollView {
         return dm.heightPixels;
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                float downX = ev.getRawX();
+                if(downX>0.1*getScreenWidth()){
+                    return false;
+                }
+                break;
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
     /**
      * 5.3 处理手指快速滑动
      */

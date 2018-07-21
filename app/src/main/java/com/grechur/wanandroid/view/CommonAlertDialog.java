@@ -10,13 +10,6 @@ import android.widget.TextView;
 import com.grechur.wanandroid.R;
 
 
-/**
- * Common AlertDialog Package
- *
- * @author chao.qu
- * @date 2017/11/15
- */
-
 public class CommonAlertDialog {
 
     private AlertDialog alertDialog;

@@ -80,7 +80,11 @@ public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements 
         mWrapRecyclerView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-
+                Intent intent = new Intent();
+                intent.setClass(getActivity(), WebViewActivity.class);
+                intent.putExtra(Constant.INTENT_URL,mArticles.get(position).link);
+                intent.putExtra(Constant.INTENT_TITLE,mArticles.get(position).title);
+                getActivity().startActivity(intent);
             }
         });
 
@@ -179,8 +183,8 @@ public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements 
     public void onPageClick(View view, int position) {
         Intent intent = new Intent();
         intent.setClass(getActivity(), WebViewActivity.class);
-        intent.putExtra(Constant.INTENT_URL,mArticles.get(position).link);
-        intent.putExtra(Constant.INTENT_TITLE,mArticles.get(position).title);
+        intent.putExtra(Constant.INTENT_URL,mBanners.get(position).url);
+        intent.putExtra(Constant.INTENT_TITLE,mBanners.get(position).title);
         getActivity().startActivity(intent);
     }
 
