@@ -118,6 +118,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
     @Override
     public void onError(String code, String msg) {
         showToast(msg);
+        smart_refresh.finishRefresh();
     }
 
     @Override
@@ -125,6 +126,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
         mKnowledge.clear();
         mKnowledge.addAll(knowledges);
         mKnowledgeAdapter.notifyDataSetChanged();
+        smart_refresh.finishRefresh();
     }
 
     @Override

@@ -16,6 +16,7 @@
         android:background="@android:color/transparent"
         android:contentDescription="@null"
         android:src="@drawable/selector_back_arrow_bg"
+        android:transitionName="share"
         android:layout_marginRight="12dp" />
 
     <TextView
@@ -30,7 +31,8 @@
         android:text="搜索"
         android:textColor="@color/white"
         android:textSize="12sp"
-        android:layout_marginRight="12dp" />
+        android:layout_marginRight="12dp"
+        android:transitionName="share1"/>
 
 
 
@@ -49,6 +51,7 @@
             android:paddingLeft="27dp"
             android:paddingRight="1dp"
             android:drawableLeft="@drawable/ic_search"
-            android:hint="输入字段搜索"/>
+            android:hint="输入字段搜索"
+            android:transitionName="share2"/>
 
 </android.support.v7.widget.Toolbar>

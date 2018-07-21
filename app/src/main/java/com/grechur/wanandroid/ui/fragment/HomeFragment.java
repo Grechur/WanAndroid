@@ -140,9 +140,9 @@ public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements 
 
     @Override
     public void onError(String code, String msg) {
+        showToast(msg);
         smart_refresh.finishRefresh();
         smart_refresh.finishLoadMore();
-        showToast(msg);
     }
 
     @Override
