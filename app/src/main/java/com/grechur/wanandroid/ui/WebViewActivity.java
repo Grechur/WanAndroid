@@ -25,6 +25,7 @@ import butterknife.Unbinder;
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class WebViewActivity extends AppCompatActivity {
 
+
     @BindView(R.id.web_load_view)
     WebLoadView web_load_view;
     @BindView(R.id.wv_web)
@@ -76,6 +77,7 @@ public class WebViewActivity extends AppCompatActivity {
                 super.onPageFinished(view, url);
                 web_load_view.setVisibility(View.GONE);
                 web_load_view.cancleAnimal();
+
             }
 
             @Override
