@@ -46,6 +46,7 @@ import butterknife.Unbinder;
 public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements HomeArticleContract.IArticlesView,
         HomeFrgAdapter.OnItemClickListen, MZBannerView.BannerPageClickListener{
 
+    //列表头部
     private View headerView;
 
     private MZBannerView mMZBanner;
@@ -54,8 +55,9 @@ public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements 
     WrapRecyclerView mWrapRecyclerView;
     @BindView(R.id.smart_refresh)
     RefreshLayout smart_refresh;
-
+    //适配器
     private HomeFrgAdapter mHomeFrgAdapter;
+    //列表数据源
     private List<Article> mArticles;
 
     Unbinder unbinder;
@@ -111,7 +113,9 @@ public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements 
     }
 
 
-
+    /**
+     * 获取数据
+     */
     @Override
     protected void initData() {
         getPresenter().getArticles(0);
@@ -213,6 +217,11 @@ public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        unbinder.unbind();
+        mBanners.clear();
+        mBanners = null;
+        mArticles.clear();
+        mArticles = null;
     }
 
     @Override
@@ -232,6 +241,5 @@ public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unbinder.unbind();
     }
 }

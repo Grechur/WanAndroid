@@ -6,7 +6,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.grechur.wanandroid.ui.WebViewActivity">
+
     <include layout="@layout/tool_bar"/>
+    <com.grechur.wanandroid.view.WebLoadView
+        android:id="@+id/web_load_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
     <WebView
         android:id="@+id/wv_web"
         android:layout_width="match_parent"

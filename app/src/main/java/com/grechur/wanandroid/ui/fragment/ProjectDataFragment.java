@@ -147,5 +147,7 @@ public class ProjectDataFragment extends BaseFragment<ProjectDataPresenter> impl
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+        mProjectInfo.clear();
+        mProjectInfo = null;
     }
 }

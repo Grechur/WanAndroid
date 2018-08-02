@@ -67,7 +67,6 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
         knowledge_recycler_view.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                ToastUtils.show("第"+position+"被点击");
                 List<Children> children = mKnowledge.get(position).children;
                 ArrayList<String> sList = new ArrayList<>();
                 ArrayList<String> iList = new ArrayList<>();
@@ -133,5 +132,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+        mKnowledge.clear();
+        mKnowledge = null;
     }
 }
