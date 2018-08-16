@@ -38,6 +38,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import okhttp3.Call;
+import okhttp3.HttpUrl;
+import okhttp3.Request;
+import retrofit2.Retrofit;
 
 /**
  * Created by zz on 2018/5/22.
@@ -110,6 +114,12 @@ public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements 
         });
         //触发自动刷新
         smart_refresh.autoRefresh();
+        okhttp3.Call.Factory factory = new Call.Factory() {
+            @Override
+            public Call newCall(Request request) {
+                return null;
+            }
+        };
     }
 
 

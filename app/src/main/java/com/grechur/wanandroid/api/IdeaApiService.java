@@ -16,9 +16,12 @@ import com.grechur.wanandroid.model.entity.project.ProjectData;
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -114,4 +117,14 @@ public interface IdeaApiService {
     @POST("article/query/{page}/json")
     @FormUrlEncoded
     Observable<BasicResponse<MainArticle>> getSearchList(@Path("page") int page, @Field("k") String k);
+
+
+    /**
+     * method 表示请求的方法，区分大小写
+     * path表示路径
+     * hasBody表示是否有请求体
+
+    @HTTP(method = "GET", path = "project/list/{index}/json", hasBody = false)
+    Call<ResponseBody> getBlog(@Path("index") int index);
+     */
 }

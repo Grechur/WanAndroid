@@ -85,10 +85,10 @@ public class WebLoadView extends View{
              int cy = (int) (mCurrentMergeRadius*Math.sin(currentAng)+centerY);
              canvas.drawCircle(cx,cy,mSmallCircleRadius,mPaint);
         }
-
         if(mAnimatorSet!=null&&!mAnimatorSet.isStarted()){
             mAnimatorSet.start();
         }
+
     }
 
 
@@ -108,7 +108,7 @@ public class WebLoadView extends View{
                 float value = (float) animation.getAnimatedValue();
                 mCurrentAng = value;
                 invalidate();
-                requestLayout();
+//                requestLayout();
             }
         });
 
@@ -152,7 +152,7 @@ public class WebLoadView extends View{
         if(mAnimatorSet!=null&&mAnimatorSet.isStarted()){
             mAnimatorSet.cancel();
         }
-        clearAnimation();
+//        clearAnimation();
     }
 
     /**
