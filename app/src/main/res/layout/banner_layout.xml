@@ -11,7 +11,7 @@
         android:layout_marginTop="10dp"
         app:open_mz_mode="true"
         app:middle_page_cover="false"
-        app:canLoop="true"
+        app:canLoop="false"
         app:indicatorAlign="center"
         app:indicatorPaddingLeft="10dp"
         android:layout_marginLeft="10dp"
