@@ -141,5 +141,7 @@ public class KnowArticleFragment extends BaseFragment<KnowArticlePresenter> impl
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+        mArticles.clear();
+        mArticles = null;
     }
 }

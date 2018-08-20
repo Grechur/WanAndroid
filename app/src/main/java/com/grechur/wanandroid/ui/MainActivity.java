@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -34,6 +35,7 @@ import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.bumptech.glide.Glide;
 import com.grechur.wanandroid.R;
 import com.grechur.wanandroid.aop.LoginCheck;
 import com.grechur.wanandroid.ui.fragment.HistoryFragment;
@@ -100,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
 
         bottomNavigationBar.setTabSelectedListener(this);
         bottomNavigationBar.selectTab(0);
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             @Override
@@ -177,20 +178,24 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
                     ToastUtils.show("Setting");
                     return true;
                 });
+//        Glide.with(this).load("").into();
     }
 
 
     @Override
     public void onTabSelected(int position) {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        hideAllFragment(transaction);
         switch (position){
             case 0:
                 title.setText("首页");
                 if(mHomeFragment==null){
                     mHomeFragment = new HomeFragment();
                     transaction.add(R.id.fragment_container,mHomeFragment);
+                }else{
+                    transaction.show(mHomeFragment);
                 }
-                transaction.replace(R.id.fragment_container,mHomeFragment);
+//                transaction.replace(R.id.fragment_container,mHomeFragment);
 
                 transaction.commit();
                 break;
@@ -199,8 +204,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
                 if(mKnowledgeFragment==null){
                     mKnowledgeFragment = new KnowledgeFragment();
                     transaction.add(R.id.fragment_container,mKnowledgeFragment);
+                }else{
+                    transaction.show(mKnowledgeFragment);
                 }
-                transaction.replace(R.id.fragment_container,mKnowledgeFragment);
+//                transaction.replace(R.id.fragment_container,mKnowledgeFragment);
 
                 transaction.commit();
                 break;
@@ -209,8 +216,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
                 if(mNavigationFragment==null){
                     mNavigationFragment = new NavigationFragment();
                     transaction.add(R.id.fragment_container,mNavigationFragment);
+                }else{
+                    transaction.show(mNavigationFragment);
                 }
-                transaction.replace(R.id.fragment_container,mNavigationFragment);
+
+//                transaction.replace(R.id.fragment_container,mNavigationFragment);
 
                 transaction.commit();
                 break;
@@ -219,12 +229,29 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
                 if(mProjectFragment==null){
                     mProjectFragment = new ProjectFragment();
                     transaction.add(R.id.fragment_container,mProjectFragment);
+                }else{
+                    transaction.show(mProjectFragment);
                 }
-                transaction.replace(R.id.fragment_container,mProjectFragment);
+//                transaction.replace(R.id.fragment_container,mProjectFragment);
 
                 transaction.commit();
 
                 break;
+        }
+    }
+
+    private void hideAllFragment(FragmentTransaction transaction) {
+        if(mHomeFragment!=null){
+            transaction.hide(mHomeFragment);
+        }
+        if(mKnowledgeFragment!=null){
+            transaction.hide(mKnowledgeFragment);
+        }
+        if(mNavigationFragment!=null){
+            transaction.hide(mNavigationFragment);
+        }
+        if(mProjectFragment!=null){
+            transaction.hide(mProjectFragment);
         }
     }
 

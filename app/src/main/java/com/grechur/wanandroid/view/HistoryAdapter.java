@@ -22,7 +22,7 @@ import java.util.List;
  * Created by zhouzhu on 2018/5/27.
  */
 
-public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyHolder> {
+public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
     private List<History> mData;
@@ -46,12 +46,13 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyHolder
         return new MyHolder(view);
     }
 
+
     @Override
-    public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        MyHolder mholder = (MyHolder)holder;
+        mholder.text.setText(TextUtils.isEmpty(mData.get(position).name)?"":mData.get(position).name);
 
-        holder.text.setText(TextUtils.isEmpty(mData.get(position).name)?"":mData.get(position).name);
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        mholder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onItemClickListen.onItemClick(position);

@@ -3,6 +3,7 @@ package com.grechur.wanandroid.base;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 
 import com.grechur.wanandroid.utils.AccountMgr;
 
@@ -16,11 +17,18 @@ public abstract class BaseMvpActivity<P extends BasePresenter> extends AppCompat
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAccountMgr = new AccountMgr(this);
+        boolean enableNightMode = mAccountMgr.getBool("isNight",false);
+        if(!enableNightMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
         setContentView();
         
         mPresenter = createPresenter();
         mPresenter.attach(this);
-        mAccountMgr = new AccountMgr(this);
+
         initView();
         
         initData();

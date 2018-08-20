@@ -85,5 +85,6 @@ public class KnowledgeProcActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unbind.unbind();
+
     }
 }

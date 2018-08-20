@@ -60,12 +60,17 @@ public class SearchListActivity extends BaseMvpActivity<SearchPresenter> impleme
     @BindView(R.id.smart_refresh)
     RefreshLayout smart_refresh;
 
+    //butterknife的Unbinder
     private Unbinder unbinder;
+    //搜索关键字
     private String mKey;
+    //数据库的关键字id
     private Long mId;
-    
+    //适配器
     private HomeFrgAdapter mHomeFrgAdapter;
+    //列表数据
     private List<Article> mData;
+    //数据库数据
     private List<History> mHistory;
     View loadView = null;
     private int page;
@@ -98,7 +103,7 @@ public class SearchListActivity extends BaseMvpActivity<SearchPresenter> impleme
 
         if(loadView!=null)
             search_recycle_view.addLoadingView(loadView);
-
+        //点击事件
         search_recycle_view.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -127,10 +132,13 @@ public class SearchListActivity extends BaseMvpActivity<SearchPresenter> impleme
         smart_refresh.autoRefresh();
     }
 
+    /**
+     * 获取数据
+     */
     @Override
     protected void initData() {
         getPresenter().getSearchList(0,mKey);
-        setHistory(mKey,mId);
+        setHistory(mKey,mId);//数据库
         getHistory();
     }
 
@@ -190,6 +198,8 @@ public class SearchListActivity extends BaseMvpActivity<SearchPresenter> impleme
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+        mData.clear();
+        mData = null;
     }
 
     public void setHistory(String key,Long id){
@@ -245,4 +255,5 @@ public class SearchListActivity extends BaseMvpActivity<SearchPresenter> impleme
                     }
                 });
     }
+
 }

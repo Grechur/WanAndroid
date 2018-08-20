@@ -269,6 +269,12 @@ public class HistoryFragment extends BaseDialogFragment<HistoryPresenter> implem
         super.onDestroy();
 
         unbinder.unbind();
+        mHistory.clear();
+        mData.clear();
+        mTitles.clear();
+        mTitles = null;
+        mData = null;
+        mHistory = null;
     }
 
     /**

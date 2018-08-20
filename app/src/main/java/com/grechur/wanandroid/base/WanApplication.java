@@ -3,9 +3,11 @@ package com.grechur.wanandroid.base;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
+import android.support.v7.app.AppCompatDelegate;
 
 //import com.grechur.wanandroid.utils.GreenDaoHelper;
 import com.grechur.wanandroid.utils.GreenDaoHelper;
+import com.grechur.wanandroid.utils.UserInfoTools;
 import com.grechur.wanandroid.utils.Utils;
 
 /**
@@ -23,10 +25,20 @@ public class WanApplication extends Application{
         Utils.init(this);
         app = this;
         GreenDaoHelper.initDatabase(this);
+        setNightMode();
     }
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
+    }
+
+    /**
+     * 初始化夜间模式
+     */
+    private void setNightMode() {
+        boolean nightMode = UserInfoTools.isNightMode(this);
+        AppCompatDelegate.setDefaultNightMode(nightMode ?
+                AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
     }
 }

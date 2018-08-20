@@ -118,5 +118,7 @@ public class NaviCommonFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+        mArticles.clear();
+        mArticles = null;
     }
 }

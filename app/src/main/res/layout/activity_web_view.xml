@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.grechur.wanandroid.ui.WebViewActivity">
-    <com.grechur.wanandroid.view.CircleLoadView
-        android:id="@+id/circle_view"
+    <include layout="@layout/tool_bar"/>
+    <com.grechur.wanandroid.view.WebLoadView
+        android:id="@+id/web_load_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>
-    <include layout="@layout/tool_bar"/>
     <WebView
         android:id="@+id/wv_web"
         android:layout_width="match_parent"

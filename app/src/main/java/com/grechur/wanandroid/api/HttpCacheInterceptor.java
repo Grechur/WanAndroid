@@ -4,6 +4,7 @@ import com.grechur.wanandroid.utils.LogUtils;
 import com.grechur.wanandroid.utils.NetworkUtils;
 
 import java.io.IOException;
+import java.net.URL;
 
 import okhttp3.CacheControl;
 import okhttp3.HttpUrl;
@@ -26,6 +27,7 @@ public class HttpCacheInterceptor implements Interceptor {
                     .build();
             LogUtils.e("Okhttp", "no network");
         }
+
 
         Response originalResponse = chain.proceed(request);
         if (NetworkUtils.isConnected()) {
