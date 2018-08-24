@@ -92,7 +92,7 @@ public class HistoryFragment extends BaseDialogFragment<HistoryPresenter> implem
         ChipsLayoutManager layoutManager = ChipsLayoutManager.newBuilder(getActivity()).build();
         //recycleview的设置
         history_recycle_view.setLayoutManager(layoutManager);
-        history_recycle_view.addItemDecoration(new DividerGridItemDecoration(getActivity(),R.drawable.line_drawable));
+        history_recycle_view.addItemDecoration(new DividerGridItemDecoration(getActivity(),R.drawable.line_trans_drawable));
         //数组初始化
         mData = new ArrayList<>();
         mHistory= new ArrayList<>();

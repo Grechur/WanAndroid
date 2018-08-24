@@ -1,9 +1,11 @@
-package com.grechur.wanandroid.utils.imageload;
+package com.grechur.wanandroid.utils.imageload.hasprogress;
 
 
 
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 
 import java.io.IOException;
@@ -30,10 +32,13 @@ public class ProgressResponseBody extends ResponseBody {
     private ResponseBody responseBody;
 
     private ProgressListener listener;
+    private static final int UPDATE = 1;
+    private MyHandler handler;
 
     public ProgressResponseBody(String url, ResponseBody responseBody) {
         this.responseBody = responseBody;
         listener = ProgressInterceptor.LISTENER_MAP.get(url);
+        handler = new MyHandler();
     }
 
 
@@ -60,8 +65,6 @@ public class ProgressResponseBody extends ResponseBody {
 
         long totalBytesRead = 0;
 
-//        int currentProgress;
-
         ProgressSource(Source source) {
             super(source);
         }
@@ -75,17 +78,36 @@ public class ProgressResponseBody extends ResponseBody {
             } else {
                 totalBytesRead += bytesRead;
             }
-//            int progress = (int) (100f * totalBytesRead / fullLength);
-//            Log.d(TAG, "download progress is " + progress);
-            if (listener != null ) {//&& progress != currentProgress
-                listener.onProgress(totalBytesRead,fullLength);
-            }
-            if (listener != null && totalBytesRead == fullLength) {
-                listener = null;
-            }
-
-//            currentProgress = progress;
+            ProgressModel progressModel = new ProgressModel();
+            progressModel.setContentLength(fullLength);
+            progressModel.setCurrentBytes(totalBytesRead);
+            Message message = Message.obtain();
+            message.what = UPDATE;
+            message.obj = progressModel;
+            handler.sendMessage(message);
             return bytesRead;
+        }
+    }
+
+    /**
+     * 将进度放到主线程中显示
+     */
+    class MyHandler extends Handler {
+
+        public MyHandler() {
+            super(Looper.getMainLooper());
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case UPDATE:
+                    ProgressModel progressModel = (ProgressModel) msg.obj;
+                    //接口返回
+                    if (listener!=null)listener.onProgress(progressModel.getCurrentBytes(),progressModel.getContentLength());
+                    break;
+
+            }
         }
     }
 }

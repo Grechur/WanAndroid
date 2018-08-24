@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.grechur.wanandroid.R;
 import com.grechur.wanandroid.base.BaseFragment;
+import com.grechur.wanandroid.base.BaseLazyFragment;
 import com.grechur.wanandroid.contract.ProjectDataContract;
 import com.grechur.wanandroid.model.entity.project.ProjectBean;
 import com.grechur.wanandroid.model.entity.project.ProjectData;
@@ -38,7 +39,7 @@ import butterknife.Unbinder;
  * Created by zz on 2018/5/25.
  */
 
-public class ProjectDataFragment extends BaseFragment<ProjectDataPresenter> implements ProjectDataContract.IProjectDataView{
+public class ProjectDataFragment extends BaseLazyFragment<ProjectDataPresenter> implements ProjectDataContract.IProjectDataView{
     @BindView(R.id.wrawp_recycler_view)
     WrapRecyclerView project_recycler_view;
     @BindView(R.id.smart_refresh)
@@ -103,8 +104,7 @@ public class ProjectDataFragment extends BaseFragment<ProjectDataPresenter> impl
                 getPresenter().getProjectData(page,mCId);
             }
         });
-        //触发自动刷新
-        smart_refresh.autoRefresh();
+
     }
 
     @Override
@@ -114,6 +114,8 @@ public class ProjectDataFragment extends BaseFragment<ProjectDataPresenter> impl
 
     @Override
     protected void initData() {
+        //触发自动刷新
+        smart_refresh.autoRefresh();
         getPresenter().getProjectData(1,mCId);
     }
 
@@ -149,5 +151,10 @@ public class ProjectDataFragment extends BaseFragment<ProjectDataPresenter> impl
         unbinder.unbind();
         mProjectInfo.clear();
         mProjectInfo = null;
+    }
+
+    @Override
+    protected void onInvisible() {
+
     }
 }

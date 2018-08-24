@@ -4,6 +4,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.grechur.wanandroid.R;
+import com.grechur.wanandroid.utils.imageload.hasprogress.ProgressListener;
 
 
 /**
@@ -20,6 +21,7 @@ public class ImageLoader {
     private BitmapTransformation transformation;//是否是圆形图片
     private int width;//设置加载宽
     private int height;//设置加载高
+    private ProgressListener listener;//添加进度监听
 
     private ImageLoader(Builder builder) {
         this.type = builder.type;
@@ -31,6 +33,7 @@ public class ImageLoader {
         this.transformation = builder.transformation;
         this.width = builder.width;
         this.height = builder.height;
+        this.listener = builder.listener;
     }
 
     public int getType() {
@@ -63,6 +66,10 @@ public class ImageLoader {
 
     public int getHeight(){return height;}
 
+    public ProgressListener getListener() {
+        return listener;
+    }
+
     public static class Builder{
         private int type;  //类型 (大图，中图，小图)
         private String url; //需要解析的url
@@ -73,6 +80,7 @@ public class ImageLoader {
         private BitmapTransformation transformation;//图片形状
         private int width;//设置加载宽
         private int height;//设置加载高
+        private ProgressListener listener;//添加进度监听
         public Builder() {
             this.type = ImageLoaderUtil.PIC_SMALL;
             this.url = "";
@@ -81,8 +89,9 @@ public class ImageLoader {
             this.wifiStrategy = ImageLoaderUtil.LOAD_STRATEGY_NORMAL;
             this.isCircle = false;
             this.transformation = null;
-            this.width = imgView.getWidth();
-            this.height = imgView.getHeight();
+            this.width = imgView!=null?imgView.getWidth():0;
+            this.height = imgView!=null?imgView.getHeight():0;
+            this.listener = null;
         }
 
         public Builder type(int type) {
@@ -127,6 +136,11 @@ public class ImageLoader {
 
         public Builder height(int height){
             this.height = height;
+            return this;
+        }
+
+        public Builder listener(ProgressListener listener){
+            this.listener = listener;
             return this;
         }
 

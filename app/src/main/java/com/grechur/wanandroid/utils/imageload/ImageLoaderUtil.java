@@ -36,6 +36,8 @@ public class ImageLoaderUtil {
         mStrategy.loadImage(context,img);
     }
 
+
+
     public void setLoadImgStrategy(BaseImageLoaderStrategy strategy){
         mStrategy =strategy;
     }

@@ -20,7 +20,7 @@ public abstract class BaseLazyFragment<P extends BasePresenter> extends Fragment
     protected Context mContext;
     protected boolean isVisible;
     private boolean isPrepared;
-    private boolean isFirst = true;
+//    private boolean isFirst = true;
     private LayoutInflater inflater;
     private P mPresenter;
 
@@ -30,27 +30,22 @@ public abstract class BaseLazyFragment<P extends BasePresenter> extends Fragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         isPrepared = true;
+        lazyLoad();
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if(getUserVisibleHint()){
+        if(isVisibleToUser){
             isVisible = true;
             lazyLoad();
         }else{
             isVisible = false;
             onInvisible();
         }
+        super.setUserVisibleHint(isVisibleToUser);
+
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(getUserVisibleHint()){
-            setUserVisibleHint(true);
-        }
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,11 +79,11 @@ public abstract class BaseLazyFragment<P extends BasePresenter> extends Fragment
      * 懒加载
      */
     protected void lazyLoad(){
-        if(!isPrepared || !isVisible || !isFirst){
+        if(!isPrepared || !isVisible || rootView == null){//|| !isFirst
             return;
         }
         initData();
-        isFirst = false;
+//        isFirst = false;
     }
 
     //--------------------------abstract method------------------------//

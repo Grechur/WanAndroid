@@ -51,9 +51,9 @@ public class ProjectFragment extends BaseFragment<ProjectPresent> implements Pro
     @Override
     protected void initView(View view) {
         unbind = ButterKnife.bind(this,view);
-        view_project_pager.setOffscreenPageLimit(1);
         mList = new ArrayList<String>();
         mFragmentList = new ArrayList<>();
+        view_project_pager.setOffscreenPageLimit(1);
         mPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(),mFragmentList,mList);
         view_project_pager.setAdapter(mPagerAdapter);
         tl_project_layout.setupWithViewPager(view_project_pager);
@@ -95,6 +95,7 @@ public class ProjectFragment extends BaseFragment<ProjectPresent> implements Pro
             fragment.setArguments(bundle);
             mFragmentList.add(fragment);
         }
+
         mPagerAdapter.notifyDataSetChanged();
     }
 

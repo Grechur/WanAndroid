@@ -2,26 +2,16 @@ package com.grechur.wanandroid.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
+
 import com.grechur.wanandroid.R;
 import com.grechur.wanandroid.aop.LoginCheck;
 import com.grechur.wanandroid.base.BaseFragment;
@@ -33,8 +23,6 @@ import com.grechur.wanandroid.presenter.HomeArticlePresenter;
 import com.grechur.wanandroid.ui.WebViewActivity;
 import com.grechur.wanandroid.utils.Constant;
 import com.grechur.wanandroid.utils.ToastUtils;
-import com.grechur.wanandroid.utils.imageload.ProgressInterceptor;
-import com.grechur.wanandroid.utils.imageload.ProgressListener;
 import com.grechur.wanandroid.view.HomeFrgAdapter;
 import com.grechur.wanandroid.view.OnItemClickListener;
 import com.grechur.wanandroid.view.WrapRecyclerView;
@@ -51,10 +39,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import okhttp3.Call;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
-import retrofit2.Retrofit;
 
 /**
  * Created by zz on 2018/5/22.
@@ -223,38 +207,7 @@ public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements 
         @Override
         public void onBind(Context context, int position, BannerItem data) {
             // 数据绑定
-//            Glide.with(context).load(data.imagePath).into(mImageView);
-            ProgressInterceptor.addListener(data.imagePath, new ProgressListener() {
-                @Override
-                public void onProgress(long currentByte, long countByte) {
-                    Log.e("TAG",(100*countByte/countByte)+"");
-
-                }
-
-
-            });
-
-            RequestOptions options = new RequestOptions()
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE);
-            Glide.with(mImageView.getContext())
-                    .load(data.imagePath)
-                    .apply(options)
-                    .listener(new RequestListener<Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            ProgressInterceptor.removeListener(data.imagePath);
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                            ProgressInterceptor.removeListener(data.imagePath);
-                            return false;
-                        }
-                    })
-                    .into(mImageView);
-
+            Glide.with(context).load(data.imagePath).into(mImageView);
         }
     }
 

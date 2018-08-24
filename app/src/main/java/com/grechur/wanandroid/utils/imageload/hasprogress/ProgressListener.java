@@ -1,4 +1,4 @@
-package com.grechur.wanandroid.utils.imageload;
+package com.grechur.wanandroid.utils.imageload.hasprogress;
 
 /**
  * Created by zz on 2018/8/20.

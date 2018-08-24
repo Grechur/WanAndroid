@@ -72,7 +72,7 @@ public class NaviCommonFragment extends Fragment {
         //ChipsLayoutManager自定义的流布局manager
         ChipsLayoutManager layoutManager = ChipsLayoutManager.newBuilder(getContext()).build();
         common_recycler_view.setLayoutManager(layoutManager);
-        common_recycler_view.addItemDecoration(new DividerGridItemDecoration(getActivity(),R.drawable.line_drawable));
+        common_recycler_view.addItemDecoration(new DividerGridItemDecoration(getActivity(),R.drawable.line_trans_drawable));
         mArticles = new ArrayList<>();
 
         mFlowAdapter = new FlowAdapter(getActivity(),mArticles);

@@ -1,4 +1,5 @@
-package com.grechur.wanandroid.utils.imageload;
+package com.grechur.wanandroid.utils.imageload.hasprogress;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;

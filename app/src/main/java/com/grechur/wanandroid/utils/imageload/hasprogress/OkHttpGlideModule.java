@@ -1,4 +1,4 @@
-package com.grechur.wanandroid.utils.imageload;
+package com.grechur.wanandroid.utils.imageload.hasprogress;
 
 import android.content.Context;
 

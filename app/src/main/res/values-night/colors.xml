@@ -25,4 +25,5 @@
     <color name="transparent">#00000000</color>
 
     <color name="comment_text">#5b5d5c</color>
+    <color name="history">#222222</color>
 </resources>

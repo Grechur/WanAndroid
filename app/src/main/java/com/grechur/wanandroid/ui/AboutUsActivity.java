@@ -5,9 +5,11 @@ import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Binder;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -15,8 +17,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.grechur.wanandroid.R;
-import com.grechur.wanandroid.contract.UserInfoContract;
 import com.grechur.wanandroid.utils.UserInfoTools;
+import com.grechur.wanandroid.utils.imageload.ImageLoader;
+import com.grechur.wanandroid.utils.imageload.ImageLoaderUtil;
+import com.grechur.wanandroid.utils.imageload.hasprogress.ProgressListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,8 +34,14 @@ public class AboutUsActivity extends AppCompatActivity {
     ImageView iv_back;
     @BindView(R.id.title)
     TextView title;
+    @BindView(R.id.iv_img)
+    ImageView mImageView;
+    @BindView(R.id.tv_progress)
+    TextView tv_progress;
 
     Unbinder unbinder;
+
+    String url = "http://abc.2008php.com/2015_Website_appreciate/2015-09-20/20150920191026.jpg";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,11 +62,25 @@ public class AboutUsActivity extends AppCompatActivity {
         sw_day_night.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+//                if(isChecked){
                     setNightMode();
-                }
+//                }
             }
         });
+
+        ProgressListener progressListener = new ProgressListener() {
+            @Override
+            public void onProgress(long currentByte, long countByte) {
+                int d = (int) (100*currentByte/countByte);
+                tv_progress.setText(d+"");
+            }
+        };
+        ImageLoader imageLoader = new ImageLoader.Builder()
+                .imgView(mImageView)
+                .url(url)
+                .listener(progressListener)
+                .build();
+        ImageLoaderUtil.getInstance().loadImage(this,imageLoader);
     }
 
     @OnClick({R.id.iv_back})
@@ -77,7 +101,7 @@ public class AboutUsActivity extends AppCompatActivity {
         //  切换模式
         getDelegate().setDefaultNightMode(currentNightMode == Configuration.UI_MODE_NIGHT_NO ?
                 AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
-        UserInfoTools.setChangeNightMode(this,true);
+//        UserInfoTools.setChangeNightMode(this,true);
         //  重启Activity
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

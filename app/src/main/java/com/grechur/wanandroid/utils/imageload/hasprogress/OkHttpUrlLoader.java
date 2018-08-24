@@ -1,4 +1,4 @@
-package com.grechur.wanandroid.utils.imageload;
+package com.grechur.wanandroid.utils.imageload.hasprogress;
 
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.model.GlideUrl;

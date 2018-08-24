@@ -7,7 +7,8 @@
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
     android:layout_marginBottom="10dp"
-    android:layout_marginTop="10dp">
+    android:layout_marginTop="10dp"
+    android:elevation="5dp">
         <ImageView
             android:id="@+id/iv_project_img"
             android:layout_width="100dp"
@@ -52,6 +53,7 @@
                     android:layout_below="@+id/ll_top"
                     android:text="一款基于douban及ONE API开发的资讯类的开源项目。项目采取的是okhttp + MVP架构开发。"
                     android:textSize="14sp"
+                    android:textColor="@color/label_text"
                     android:maxLength="80"
                     />
                 <TextView

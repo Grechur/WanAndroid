@@ -1,4 +1,4 @@
-package com.grechur.wanandroid.utils.imageload;
+package com.grechur.wanandroid.utils.imageload.hasprogress;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -7,7 +7,6 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.HttpException;
 import com.bumptech.glide.load.data.DataFetcher;
-import com.bumptech.glide.load.data.InputStreamRewinder;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.util.ContentLengthInputStream;
 

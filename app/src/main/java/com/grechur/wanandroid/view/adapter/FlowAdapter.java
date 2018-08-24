@@ -1,6 +1,7 @@
 package com.grechur.wanandroid.view.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import com.grechur.wanandroid.R;
 import com.grechur.wanandroid.model.entity.Article;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Zc on 2018/2/26.
@@ -39,7 +41,6 @@ public class FlowAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if(list.get(position)!=null){
             textView.setText(TextUtils.isEmpty(list.get(position).title)?"":list.get(position).title);
         }
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
