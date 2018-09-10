@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.grechur.wanandroid.ui.LoginActivity;
 import com.grechur.wanandroid.utils.AccountMgr;
 import com.grechur.wanandroid.utils.LogUtils;
+import com.grechur.wanandroid.utils.ToastUtils;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -38,6 +39,7 @@ public class SectionAspect {
     @Around("checkLoginBehavior()")
     public Object checkLogin(ProceedingJoinPoint joinPoint) throws Throwable{
         LogUtils.e(TAG,"checkLogin");
+        ToastUtils.show("checkLogin");
         Signature signature = joinPoint.getSignature();
         MethodSignature methodSignature = (MethodSignature) signature;
         LoginCheck loginCheck = methodSignature.getMethod().getAnnotation(LoginCheck.class);

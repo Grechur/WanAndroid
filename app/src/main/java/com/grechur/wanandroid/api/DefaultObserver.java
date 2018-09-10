@@ -1,12 +1,7 @@
 package com.grechur.wanandroid.api;
 
-import android.app.Activity;
-import android.text.TextUtils;
-import android.widget.Toast;
-
 import com.google.gson.JsonParseException;
-import com.grechur.wanandroid.R;
-import com.grechur.wanandroid.base.BasicResponse;
+import com.grechur.wanandroid.model.BasicResponse;
 
 
 import org.json.JSONException;

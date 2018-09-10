@@ -45,7 +45,7 @@ import butterknife.Unbinder;
  */
 
 public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements HomeArticleContract.IArticlesView,
-        HomeFrgAdapter.OnItemClickListen, MZBannerView.BannerPageClickListener{
+       HomeFrgAdapter.OnItemViewClickListen, MZBannerView.BannerPageClickListener{
 
     //列表头部
     private View headerView;

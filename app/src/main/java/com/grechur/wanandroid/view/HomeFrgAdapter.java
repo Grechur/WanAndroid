@@ -26,7 +26,7 @@ public class HomeFrgAdapter extends RecyclerView.Adapter<HomeFrgAdapter.MyViewHo
     private List<Article> mDatas;
     private LayoutInflater mLayoutInflater;
     private int mLayoutId;
-    private OnItemClickListen onItemClickListen;
+    private OnItemViewClickListen onItemClickListen;
     public HomeFrgAdapter(Context context, List<Article> data, int layoutId) {
         this.mDatas = data;
         this.mLayoutInflater = LayoutInflater.from(context);
@@ -60,10 +60,24 @@ public class HomeFrgAdapter extends RecyclerView.Adapter<HomeFrgAdapter.MyViewHo
             @Override
             public void onClick(View v) {
                 onItemClickListen.onItemClick(v,position);
+
             }
         });
     }
 
+
+    public class ItemClick implements View.OnClickListener {
+
+        @LoginCheck
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.iv_zan:
+                    ToastUtils.show("jinlaile");
+                    break;
+            }
+        }
+    }
 
     @Override
     public int getItemCount() {
@@ -91,11 +105,11 @@ public class HomeFrgAdapter extends RecyclerView.Adapter<HomeFrgAdapter.MyViewHo
             iv_zan = view.findViewById(R.id.iv_zan);
         }
     }
-    public void setItemClickListen(OnItemClickListen onItemClickListen){
+    public void setItemClickListen(OnItemViewClickListen onItemClickListen){
         this.onItemClickListen = onItemClickListen;
     }
 
-    public interface OnItemClickListen{
+    public interface OnItemViewClickListen{
         void onItemClick(View view, int position);
     }
 }

@@ -17,7 +17,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.grechur.wanandroid"
-        minSdkVersion 21
+        minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -30,8 +30,16 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            lintOptions {
+
+                checkReleaseBuilds false
+
+                abortOnError false
+
+            }
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
     }
     compileOptions {
         targetCompatibility 1.8
@@ -91,12 +99,12 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.google.android.gms:play-services-plus:15.0.1'
-    compile 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    compile "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
-    compile "com.squareup.retrofit2:retrofit-mock:$rootProject.retrofitVersion"
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
+    implementation "com.squareup.retrofit2:retrofit-mock:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofitVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjavaVersion"
@@ -106,7 +114,7 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknife"
     // okhttp 3
     implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttpVersion"
-    debugImplementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpVersion"
     //底部栏（谷歌的）
     implementation "com.ashokvarma.android:bottom-navigation-bar:$rootProject.bottomnavigation"
     //魅族广告栏
@@ -114,17 +122,18 @@ dependencies {
     implementation 'com.github.Grechur:SelectPicture:v1.0'
     implementation "com.android.support:multidex:$rootProject.multiVersion"
     //数据库
-    compile "org.greenrobot:greendao:$rootProject.greenDao"
+    implementation "org.greenrobot:greendao:$rootProject.greenDao"
     implementation 'com.google.code.gson:gson:2.8.4'
-    compile 'com.beloo.widget:ChipsLayoutManager:0.3.7@aar'
+    implementation 'com.beloo.widget:ChipsLayoutManager:0.3.7@aar'
     implementation files('libs/aspectjrt.jar')
 
-    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-6'
-    compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-6'//没有使用特殊Header，可以不加这行
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-6'
+    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-6'//没有使用特殊Header，可以不加这行
 
     //完整版引入
-    compile 'com.yanzhikai:TextPathView:0.1.2'
+    implementation 'com.yanzhikai:TextPathView:0.1.2'
 
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    implementation 'com.stripe:stripe-android:6.1.2'
 }

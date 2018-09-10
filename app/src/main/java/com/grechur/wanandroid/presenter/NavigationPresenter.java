@@ -2,10 +2,9 @@ package com.grechur.wanandroid.presenter;
 
 import com.grechur.wanandroid.api.DefaultObserver;
 import com.grechur.wanandroid.base.BasePresenter;
-import com.grechur.wanandroid.base.BasicResponse;
+import com.grechur.wanandroid.model.BasicResponse;
 import com.grechur.wanandroid.contract.NavigationContract;
 import com.grechur.wanandroid.model.NavigationModel;
-import com.grechur.wanandroid.model.entity.Article;
 import com.grechur.wanandroid.model.entity.navigation.NaviArticle;
 
 import java.util.List;

@@ -1,13 +1,8 @@
 package com.grechur.wanandroid.model;
 
 import com.grechur.wanandroid.api.IdeaApi;
-import com.grechur.wanandroid.base.BasicResponse;
-import com.grechur.wanandroid.contract.HomeArticleContract;
 import com.grechur.wanandroid.contract.KnowArticleContract;
-import com.grechur.wanandroid.model.entity.home.BannerItem;
 import com.grechur.wanandroid.model.entity.home.MainArticle;
-
-import java.util.List;
 
 import io.reactivex.Observable;
 

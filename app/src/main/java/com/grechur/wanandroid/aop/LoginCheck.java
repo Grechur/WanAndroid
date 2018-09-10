@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * Created by zhouzhu on 2018/5/28.
  */
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LoginCheck {
 }

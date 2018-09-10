@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.grechur.wanandroid.R;
+import com.grechur.wanandroid.aop.LoginCheck;
 import com.grechur.wanandroid.base.BaseMvpActivity;
 import com.grechur.wanandroid.contract.SearchListContract;
 import com.grechur.wanandroid.model.entity.Article;
@@ -49,7 +50,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class SearchListActivity extends BaseMvpActivity<SearchPresenter> implements SearchListContract.ISearchView {
+public class SearchListActivity extends BaseMvpActivity<SearchPresenter> implements SearchListContract.ISearchView,HomeFrgAdapter.OnItemViewClickListen {
 
     @BindView(R.id.wrawp_recycler_view)
     WrapRecyclerView search_recycle_view;
@@ -100,6 +101,8 @@ public class SearchListActivity extends BaseMvpActivity<SearchPresenter> impleme
         mHomeFrgAdapter = new HomeFrgAdapter(this,mData,R.layout.recycle_item);
         
         search_recycle_view.setAdapter(mHomeFrgAdapter);
+
+        mHomeFrgAdapter.setItemClickListen(this);
 
         if(loadView!=null)
             search_recycle_view.addLoadingView(loadView);
@@ -256,4 +259,13 @@ public class SearchListActivity extends BaseMvpActivity<SearchPresenter> impleme
                 });
     }
 
+    @LoginCheck
+    @Override
+    public void onItemClick(View view, int position) {
+        switch (view.getId()){
+            case R.id.iv_zan:
+                ToastUtils.show("jinlaile");
+                break;
+        }
+    }
 }

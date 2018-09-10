@@ -2,7 +2,7 @@ package com.grechur.wanandroid.presenter;
 
 import com.grechur.wanandroid.api.DefaultObserver;
 import com.grechur.wanandroid.base.BasePresenter;
-import com.grechur.wanandroid.base.BasicResponse;
+import com.grechur.wanandroid.model.BasicResponse;
 import com.grechur.wanandroid.contract.ProjectDataContract;
 import com.grechur.wanandroid.model.ProjectDataModel;
 import com.grechur.wanandroid.model.entity.project.ProjectData;

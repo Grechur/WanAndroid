@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.grechur.wanandroid.R;
+import com.grechur.wanandroid.aop.LoginCheck;
 import com.grechur.wanandroid.base.BaseFragment;
 import com.grechur.wanandroid.contract.HomeArticleContract;
 import com.grechur.wanandroid.contract.KnowArticleContract;
@@ -23,6 +24,7 @@ import com.grechur.wanandroid.presenter.KnowArticlePresenter;
 import com.grechur.wanandroid.ui.KnowledgeProcActivity;
 import com.grechur.wanandroid.ui.WebViewActivity;
 import com.grechur.wanandroid.utils.Constant;
+import com.grechur.wanandroid.utils.ToastUtils;
 import com.grechur.wanandroid.view.HomeFrgAdapter;
 import com.grechur.wanandroid.view.OnItemClickListener;
 import com.grechur.wanandroid.view.WrapRecyclerView;
@@ -41,7 +43,8 @@ import butterknife.Unbinder;
  * Created by zz on 2018/5/22.
  */
 
-public class KnowArticleFragment extends BaseFragment<KnowArticlePresenter> implements KnowArticleContract.IArticlesView{
+public class KnowArticleFragment extends BaseFragment<KnowArticlePresenter> implements KnowArticleContract.IArticlesView
+,HomeFrgAdapter.OnItemViewClickListen{
 
     @BindView(R.id.wrawp_recycler_view)
     WrapRecyclerView mWrapRecyclerView;
@@ -67,6 +70,7 @@ public class KnowArticleFragment extends BaseFragment<KnowArticlePresenter> impl
         mArticles = new ArrayList<>();
         mHomeFrgAdapter = new HomeFrgAdapter(getActivity(),mArticles,R.layout.recycle_item);
         mWrapRecyclerView.setAdapter(mHomeFrgAdapter);
+        mHomeFrgAdapter.setItemClickListen(this);
         mWrapRecyclerView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -85,7 +89,15 @@ public class KnowArticleFragment extends BaseFragment<KnowArticlePresenter> impl
         super.onStart();
 
     }
-
+    @LoginCheck
+    @Override
+    public void onItemClick(View view, int position) {
+        switch (view.getId()){
+            case R.id.iv_zan:
+                ToastUtils.show("jinlaile");
+                break;
+        }
+    }
     @Override
     protected void initData() {
         mCid = getArguments().getInt(Constant.INTENT_ID);

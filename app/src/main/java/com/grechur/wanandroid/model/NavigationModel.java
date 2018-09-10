@@ -1,9 +1,7 @@
 package com.grechur.wanandroid.model;
 
 import com.grechur.wanandroid.api.IdeaApi;
-import com.grechur.wanandroid.base.BasicResponse;
 import com.grechur.wanandroid.contract.NavigationContract;
-import com.grechur.wanandroid.model.entity.Article;
 import com.grechur.wanandroid.model.entity.navigation.NaviArticle;
 
 import java.util.List;

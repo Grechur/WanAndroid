@@ -2,7 +2,7 @@ package com.grechur.wanandroid.contract;
 
 import com.grechur.wanandroid.base.BaseModel;
 import com.grechur.wanandroid.base.BaseView;
-import com.grechur.wanandroid.base.BasicResponse;
+import com.grechur.wanandroid.model.BasicResponse;
 import com.grechur.wanandroid.model.entity.UserInfo;
 
 import io.reactivex.Observable;
