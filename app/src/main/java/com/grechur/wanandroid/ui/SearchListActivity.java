@@ -3,6 +3,7 @@ package com.grechur.wanandroid.ui;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -109,7 +110,7 @@ public class SearchListActivity extends BaseMvpActivity<SearchPresenter> impleme
         //点击事件
         search_recycle_view.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(int position) {
+            public void onItemClick(View v,int position) {
                 Intent intent = new Intent();
                 intent.setClass(SearchListActivity.this, WebViewActivity.class);
                 intent.putExtra(Constant.INTENT_URL,mData.get(position).link);
@@ -268,4 +269,7 @@ public class SearchListActivity extends BaseMvpActivity<SearchPresenter> impleme
                 break;
         }
     }
+
+
+
 }

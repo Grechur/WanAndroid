@@ -66,7 +66,7 @@ public class KnowledgeFragment extends BaseFragment<KnowledgePresenter> implemen
         knowledge_recycler_view.setAdapter(mKnowledgeAdapter);
         knowledge_recycler_view.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(int position) {
+            public void onItemClick(View view,int position) {
                 List<Children> children = mKnowledge.get(position).children;
                 ArrayList<String> sList = new ArrayList<>();
                 ArrayList<String> iList = new ArrayList<>();

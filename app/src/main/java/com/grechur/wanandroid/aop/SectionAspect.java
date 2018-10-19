@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,6 +22,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+
+import java.lang.reflect.Parameter;
 
 /**
  * Created by zhouzhu on 2018/5/28.
@@ -42,9 +45,36 @@ public class SectionAspect {
         ToastUtils.show("checkLogin");
         Signature signature = joinPoint.getSignature();
         MethodSignature methodSignature = (MethodSignature) signature;
+        LogUtils.e(TAG,"methodSignature.getMethod():"+methodSignature.getMethod().toString());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Parameter[] parameters = methodSignature.getMethod().getParameters();
+            for (Parameter parameter : parameters) {
+                LogUtils.e(TAG,"methodSignature.getParameters():"+parameter.toString());
+                LogUtils.e(TAG,"methodSignature.getParameters().getModifiers():"+parameter.getModifiers());
+                LogUtils.e(TAG,"methodSignature.getParameters().getDeclaringExecutable():"+parameter.getDeclaringExecutable());
+            }
+        }
+        Object[] args = joinPoint.getArgs();
+        for (Object arg : args) {
+            Log.e(TAG,"arg:"+arg);
+            if(arg instanceof View) {
+                View view = (View) arg;
+                int id = view.getId();
+                Log.e(TAG, "id:" + id);
+                if (id > 0) {
+                    String name = view.getResources().getResourceName(id);
+                    Log.e(TAG, "name:" + name);
+                }
+            }
+        }
         LoginCheck loginCheck = methodSignature.getMethod().getAnnotation(LoginCheck.class);
         if(loginCheck!=null){
             Object object = joinPoint.getThis();//有可能是view/activity/fragment
+            LogUtils.e(TAG,"joinPoint.getThis():"+object.toString());
+            LogUtils.e(TAG,"joinPoint.getTarget():"+joinPoint.getTarget());
+            LogUtils.e(TAG,"joinPoint.getKind():"+joinPoint.getKind());
+            LogUtils.e(TAG,"joinPoint.getStaticPart():"+joinPoint.getStaticPart());
+
             Context context = getContext(object);
             LogUtils.e(TAG,"context:"+context);
             if(context!=null){

@@ -80,7 +80,7 @@ public class NaviCommonFragment extends Fragment {
         common_recycler_view.setAdapter(mFlowAdapter);
         common_recycler_view.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(int position) {
+            public void onItemClick(View view,int position) {
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), WebViewActivity.class);
                 intent.putExtra(Constant.INTENT_URL,mArticles.get(position).link);

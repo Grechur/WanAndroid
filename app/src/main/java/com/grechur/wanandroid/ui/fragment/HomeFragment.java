@@ -82,7 +82,7 @@ public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements 
         mWrapRecyclerView.addHeaderView(headerView);
         mWrapRecyclerView.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(int position) {
+            public void onItemClick(View v,int position) {
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), WebViewActivity.class);
                 intent.putExtra(Constant.INTENT_URL,mArticles.get(position).link);
@@ -153,7 +153,6 @@ public class HomeFragment extends BaseFragment<HomeArticlePresenter> implements 
 
     @Override
     public void onSucceed(MainArticle article) {
-        Log.e("TAG",mHomeFrgAdapter.toString()+mWrapRecyclerView.toString());
         if(page == 0) mArticles.clear();
         smart_refresh.finishRefresh();
         smart_refresh.finishLoadMore();

@@ -55,7 +55,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         mholder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClickListen.onItemClick(position);
+                onItemClickListen.onItemClick(v,position);
             }
         });
     }

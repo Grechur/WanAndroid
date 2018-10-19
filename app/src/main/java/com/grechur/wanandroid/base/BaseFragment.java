@@ -65,4 +65,9 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     public P getPresenter() {
         return mPresenter;
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+    }
 }

@@ -1,6 +1,8 @@
 package com.grechur.wanandroid.view;
 
 
+import android.view.View;
+
 public interface OnItemClickListener {
-    public void onItemClick(int position);
+     void onItemClick(View view, int position);
 }

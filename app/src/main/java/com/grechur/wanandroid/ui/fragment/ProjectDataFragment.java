@@ -46,16 +46,19 @@ public class ProjectDataFragment extends BaseLazyFragment<ProjectDataPresenter> 
     RefreshLayout smart_refresh;
     private int mCId;
 
+    private String mProductId;
+
 
     private ProjectDataAdapter mProjectDataAdapter;
     private List<ProjectInfo> mProjectInfo;
     private Unbinder unbinder;
     private int page = 1;
 
-    public static Fragment newInstance(int id){
+    public static Fragment newInstance(int id,String name){
         Fragment fragment=new ProjectDataFragment();
         Bundle bundle=new Bundle();
         bundle.putInt(Constant.INTENT_PID,id);
+        bundle.putString(Constant.INTENT_TITLE, name);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -73,6 +76,7 @@ public class ProjectDataFragment extends BaseLazyFragment<ProjectDataPresenter> 
     protected void initView(View view) {
         unbinder = ButterKnife.bind(this,view);
         mCId = getArguments().getInt(Constant.INTENT_PID);
+        mProductId = getArguments().getString(Constant.INTENT_TITLE);
         LogUtils.e(mCId+"");
         mProjectInfo = new ArrayList<>();
         mProjectDataAdapter = new ProjectDataAdapter(getActivity(),mProjectInfo,R.layout.project_data_item);
@@ -81,7 +85,7 @@ public class ProjectDataFragment extends BaseLazyFragment<ProjectDataPresenter> 
         project_recycler_view.setAdapter(mProjectDataAdapter);
         project_recycler_view.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(int position) {
+            public void onItemClick(View view,int position) {
 //                ToastUtils.show("第"+position+"被点击");
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), WebViewActivity.class);

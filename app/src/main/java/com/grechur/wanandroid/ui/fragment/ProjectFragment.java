@@ -91,7 +91,8 @@ public class ProjectFragment extends BaseFragment<ProjectPresent> implements Pro
             mList.add(article.name);
             Bundle bundle = new Bundle();
             bundle.putInt(Constant.INTENT_PID, article.id);
-            Fragment fragment = ProjectDataFragment.newInstance(article.id);
+            bundle.putString(Constant.INTENT_TITLE, article.name);
+            Fragment fragment = ProjectDataFragment.newInstance(article.id,article.name);
             fragment.setArguments(bundle);
             mFragmentList.add(fragment);
         }

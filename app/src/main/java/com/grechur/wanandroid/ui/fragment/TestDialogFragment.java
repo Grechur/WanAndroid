@@ -72,7 +72,7 @@ public class TestDialogFragment extends DialogFragment {
         history_recycle_view.setAdapter(mHistoryAdapter);
         history_recycle_view.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(int position) {
+            public void onItemClick(View view,int position) {
                 ToastUtils.show(position+"被点击");
 
                 Intent intent = new Intent();

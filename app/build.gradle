@@ -30,13 +30,6 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            lintOptions {
-
-                checkReleaseBuilds false
-
-                abortOnError false
-
-            }
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
@@ -55,10 +48,11 @@ android {
 final def log = project.logger
 final def variants = project.android.applicationVariants
 variants.all { variant ->
-    if (!variant.buildType.isDebuggable()) {
-        log.debug("Skipping non-debuggable build type '${variant.buildType.name}'.")
-        return;
-    }
+    //这个代码是只有在debug模式中才能用aop，屏蔽才能在release中使用
+//    if (!variant.buildType.isDebuggable()) {
+//        log.debug("Skipping non-debuggable build type '${variant.buildType.name}'.")
+//        return;
+//    }
 
     JavaCompile javaCompile = variant.javaCompile
     javaCompile.doLast {

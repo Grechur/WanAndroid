@@ -1,5 +1,7 @@
 package com.grechur.wanandroid.ui;
 
+import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -30,6 +32,7 @@ public class LoginActivity  extends BaseMvpActivity<UserInfoPresenter> implement
     @BindView(R.id.btn_up)
     Button btn_up;
     Unbinder unbinder;
+
     @Override
     protected void setContentView() {
         setContentView(R.layout.activity_login);
@@ -99,4 +102,26 @@ public class LoginActivity  extends BaseMvpActivity<UserInfoPresenter> implement
         super.onDestroy();
         unbinder.unbind();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        super.startActivity(intent);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+
 }

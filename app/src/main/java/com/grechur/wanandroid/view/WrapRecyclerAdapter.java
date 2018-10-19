@@ -90,7 +90,7 @@ public class WrapRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mItemClickListener.onItemClick(adapterPosition);
+                    mItemClickListener.onItemClick(v,adapterPosition);
                 }
             });
         }

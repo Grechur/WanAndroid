@@ -2,7 +2,9 @@ package com.grechur.wanandroid.ui.fragment;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.view.View;
@@ -102,8 +104,9 @@ public class HistoryFragment extends BaseDialogFragment<HistoryPresenter> implem
 
         history_recycle_view.setAdapter(mHistoryAdapter);
         history_recycle_view.setOnItemClickListener(new OnItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
-            public void onItemClick(int position) {
+            public void onItemClick(View view,int position) {
 //                ToastUtils.show(position+"被点击");
                 //不是标题才能点击
                 if(!mData.get(position).isTitle) {
@@ -131,6 +134,7 @@ public class HistoryFragment extends BaseDialogFragment<HistoryPresenter> implem
             }
         });
     }
+
 
     @Override
     protected HistoryPresenter createPresenter() {
