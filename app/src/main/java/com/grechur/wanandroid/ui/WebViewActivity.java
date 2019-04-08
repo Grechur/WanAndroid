@@ -1,13 +1,21 @@
 package com.grechur.wanandroid.ui;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -16,8 +24,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.grechur.wanandroid.R;
+import com.grechur.wanandroid.base.WanApplication;
 import com.grechur.wanandroid.utils.Constant;
 import com.grechur.wanandroid.view.WebLoadView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,7 +99,7 @@ public class WebViewActivity extends AppCompatActivity {
             }
         });
 
-
+        registerNetTypeChangeObserver();
     }
 
     @OnClick({R.id.iv_back})
@@ -130,4 +141,28 @@ public class WebViewActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
     }
+
+
+    private void registerNetTypeChangeObserver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        WanApplication.getAppContext().registerReceiver(receiver, filter);
+        WanApplication.getAppContext().registerReceiver(receiver, filter);
+    }
+
+    private static BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.e("MainActivity","接收到了");
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            String action = intent.getAction();
+            if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+                NetworkInfo info = cm.getActiveNetworkInfo();
+                if (info == null || !info.isAvailable()) {
+                    return;
+                }
+
+            }
+        }
+    };
 }

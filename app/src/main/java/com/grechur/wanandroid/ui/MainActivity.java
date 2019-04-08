@@ -1,10 +1,17 @@
 package com.grechur.wanandroid.ui;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import android.os.Handler;
@@ -20,6 +27,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,6 +46,7 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.bumptech.glide.Glide;
 import com.grechur.wanandroid.R;
 import com.grechur.wanandroid.aop.LoginCheck;
+import com.grechur.wanandroid.base.WanApplication;
 import com.grechur.wanandroid.ui.fragment.HistoryFragment;
 import com.grechur.wanandroid.ui.fragment.HomeFragment;
 import com.grechur.wanandroid.ui.fragment.KnowledgeFragment;
@@ -47,6 +56,8 @@ import com.grechur.wanandroid.utils.AccountMgr;
 import com.grechur.wanandroid.utils.LogUtils;
 import com.grechur.wanandroid.utils.ToastUtils;
 import com.grechur.wanandroid.view.CommonAlertDialog;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -134,6 +145,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
 
         initNavi();
 
+
+
     }
 
     private void initNavi() {
@@ -185,17 +198,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     @Override
     public void onTabSelected(int position) {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        hideAllFragment(transaction);
+//        hideAllFragment(transaction);
         switch (position){
             case 0:
                 title.setText("首页");
                 if(mHomeFragment==null){
                     mHomeFragment = new HomeFragment();
-                    transaction.add(R.id.fragment_container,mHomeFragment);
-                }else{
-                    transaction.show(mHomeFragment);
+//                    transaction.add(R.id.fragment_container,mHomeFragment);
                 }
-//                transaction.replace(R.id.fragment_container,mHomeFragment);
+// else{
+//                    transaction.show(mHomeFragment);
+//                }
+                transaction.replace(R.id.fragment_container,mHomeFragment);
 
                 transaction.commit();
                 break;
@@ -203,11 +217,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
                 title.setText("知识体系");
                 if(mKnowledgeFragment==null){
                     mKnowledgeFragment = new KnowledgeFragment();
-                    transaction.add(R.id.fragment_container,mKnowledgeFragment);
-                }else{
-                    transaction.show(mKnowledgeFragment);
+//                    transaction.add(R.id.fragment_container,mKnowledgeFragment);
                 }
-//                transaction.replace(R.id.fragment_container,mKnowledgeFragment);
+// else{
+//                    transaction.show(mKnowledgeFragment);
+//                }
+                transaction.replace(R.id.fragment_container,mKnowledgeFragment);
 
                 transaction.commit();
                 break;
@@ -215,12 +230,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
                 title.setText("导航");
                 if(mNavigationFragment==null){
                     mNavigationFragment = new NavigationFragment();
-                    transaction.add(R.id.fragment_container,mNavigationFragment);
-                }else{
-                    transaction.show(mNavigationFragment);
+//                    transaction.add(R.id.fragment_container,mNavigationFragment);
                 }
+// else{
+//                    transaction.show(mNavigationFragment);
+//                }
 
-//                transaction.replace(R.id.fragment_container,mNavigationFragment);
+                transaction.replace(R.id.fragment_container,mNavigationFragment);
 
                 transaction.commit();
                 break;
@@ -228,11 +244,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
                 title.setText("项目");
                 if(mProjectFragment==null){
                     mProjectFragment = new ProjectFragment();
-                    transaction.add(R.id.fragment_container,mProjectFragment);
-                }else{
-                    transaction.show(mProjectFragment);
+//                    transaction.add(R.id.fragment_container,mProjectFragment);
                 }
-//                transaction.replace(R.id.fragment_container,mProjectFragment);
+//                else{
+//                    transaction.show(mProjectFragment);
+//                }
+                transaction.replace(R.id.fragment_container,mProjectFragment);
 
                 transaction.commit();
 
@@ -335,6 +352,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);
+
+
     }
 
     @Override
@@ -351,4 +370,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     public void onBackPressed() {
         super.onBackPressed();
     }
+
+
+
 }

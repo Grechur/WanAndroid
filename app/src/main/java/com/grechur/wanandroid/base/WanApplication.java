@@ -1,7 +1,12 @@
 package com.grechur.wanandroid.base;
 
 import android.app.Application;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatDelegate;
 
@@ -41,4 +46,6 @@ public class WanApplication extends Application{
         AppCompatDelegate.setDefaultNightMode(nightMode ?
                 AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
     }
+
+
 }
