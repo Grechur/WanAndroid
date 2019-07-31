@@ -6,6 +6,11 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <application
         android:name=".base.WanApplication"
         android:allowBackup="true"
@@ -14,10 +19,12 @@
         android:roundIcon="@drawable/ic_wan_android"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.TestActivity"></activity>
         <activity
             android:name=".ui.SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/WelcomeTheme">//设置startWindow避免启动白屏的情况
+            android:theme="@style/WelcomeTheme">
+            //设置startWindow避免启动白屏的情况
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,7 +40,9 @@
         <activity android:name=".ui.WebViewActivity" />
         <activity android:name=".ui.KnowledgeProcActivity" />
         <activity android:name=".ui.SearchListActivity" />
-        <activity android:name=".ui.AboutUsActivity"></activity>
+        <activity android:name=".ui.AboutUsActivity" />
+        <activity android:name=".ui.ScanActivity" />
+        <activity android:name=".ui.JumpToWXActivity" />
     </application>
 
 </manifest>

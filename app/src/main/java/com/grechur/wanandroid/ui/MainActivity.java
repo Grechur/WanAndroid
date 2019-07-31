@@ -12,10 +12,12 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -195,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onTabSelected(int position) {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
@@ -287,12 +290,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     void onClick(View view){
         switch (view.getId()){
             case R.id.iv_search:
-                FragmentTransaction transaction = mFragmentManager.beginTransaction();
-                mHistoryFragment = new HistoryFragment();
-                if (!mHistoryFragment.isAdded()) {
-                    mHistoryFragment.show(transaction,"HistoryFragment");
-                }
-
+//                FragmentTransaction transaction = mFragmentManager.beginTransaction();
+//                mHistoryFragment = new HistoryFragment();
+//                if (!mHistoryFragment.isAdded()) {
+//                    mHistoryFragment.show(transaction,"HistoryFragment");
+//                }
+                startActivity(new Intent(this,JumpToWXActivity.class));
                 break;
         }
     }
