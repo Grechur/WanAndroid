@@ -1,15 +1,13 @@
 package com.grechur.wanandroid.ui;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.grechur.wanandroid.R;
-import com.grechur.wanandroid.ui.fragment.HomeFragment;
-import com.grechur.wanandroid.ui.fragment.KnowledgeFragment;
 import com.grechur.wanandroid.ui.fragment.TestFragment;
 
 import butterknife.BindView;

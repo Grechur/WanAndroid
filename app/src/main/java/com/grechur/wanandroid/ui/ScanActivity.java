@@ -5,31 +5,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Vibrator;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatCallback;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatCallback;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.DecodeHintType;
 import com.grechur.wanandroid.R;
 import com.grechur.wanandroid.ui.fragment.ScanFragment;
 import com.grechur.wanandroid.utils.ToastUtils;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-
-import cn.bingoogolapple.qrcode.core.BarcodeType;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
-import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
 public class ScanActivity extends AppCompatActivity implements QRCodeView.Delegate{
     private static final String TAG = ScanActivity.class.getSimpleName();

@@ -3,13 +3,9 @@ package com.grechur.wanandroid.view.adapter;
 
 
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-
-import com.grechur.wanandroid.ui.fragment.NaviCommonFragment;
-import com.grechur.wanandroid.utils.Constant;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 import java.util.List;
 

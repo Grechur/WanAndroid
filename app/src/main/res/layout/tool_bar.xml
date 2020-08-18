@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="54dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -28,4 +28,4 @@
         android:layout_gravity = "right"
         android:layout_marginRight="13dp"
         />
-</android.support.v7.widget.Toolbar>
+</androidx.appcompat.widget.Toolbar>

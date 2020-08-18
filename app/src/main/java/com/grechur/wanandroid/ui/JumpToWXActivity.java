@@ -1,7 +1,5 @@
 package com.grechur.wanandroid.ui;
 
-import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.ComponentName;
@@ -9,20 +7,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.text.InputFilter;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.grechur.wanandroid.R;
-import com.grechur.wanandroid.utils.CustomCoinNameFilter;
-import com.grechur.wanandroid.utils.ToastUtils;
 import com.grechur.wanandroid.utils.WatcherText;
 import com.tencent.mm.opensdk.modelbiz.JumpToBizProfile;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -53,8 +47,8 @@ public class JumpToWXActivity extends AppCompatActivity {
         ClipboardManager clipboardManager = (ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clipData = ClipData.newPlainText("标签随便写", tv_jump.getText());
         clipboardManager.setPrimaryClip(clipData);
-        getWechatApi();
-//        startWeibo("6420899149","");
+//        getWechatApi();
+        startWeibo("6420899149","");
     }
 
     /**
@@ -93,7 +87,7 @@ public class JumpToWXActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.setComponent(cmp);
             intent.putExtra("uid", id);
-            startActivity(intent);
+            startActivityForResult(intent, 0);
         } else {
             Toast.makeText(this, "微博未安装", Toast.LENGTH_SHORT).show();
         }

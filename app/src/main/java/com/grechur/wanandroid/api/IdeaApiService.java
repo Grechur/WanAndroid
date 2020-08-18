@@ -32,50 +32,9 @@ public interface IdeaApiService {
      */
     int DEFAULT_TIMEOUT = 15000;
 
-    String HOST = "http://www.wanandroid.com/";
-//    String API_SERVER_URL = HOST + "api/data/";
-//
-//    String APP_SERVER_ADDR = "https://preview.yonmen.com:87/";
-//
-//    String LOCAL_HOST = "http://192.168.3.81:10000/";
-    /**
-     * 此接口服务器响应数据BasicResponse的泛型T应该是List<MeiZi>
-     * 即BasicResponse<List<MeiZi>>
-     * @return BasicResponse<List<MeiZi>>
+    String HOST = "https://www.wanandroid.com/";
 
-    @Headers("Cache-Control: public, max-age=86400") //  设置缓存
-    @GET("福利/10/1")
-    Observable<BasicResponse<List<MeiZi>>> getMezi();
-     */
-    /**
-     * 登录 接口为假接口 并不能返回数据
-     * @return
-     */
-//    @POST("login.do")
-//    Observable<BasicResponse<LoginResponse>> login(@Body LoginRequest request);
 
-    /**
-     * 刷新token 接口为假接口 并不能返回数据
-     * @return
-     */
-//    @POST("refresh_token.do")
-//    Observable<BasicResponse<RefreshTokenResponseBean>> refreshToken(@Body RefreshTokenRequest request);
-
-//    @Headers("Cache-Control: public, max-age=86400")//86400秒：24小时
-//    @GET("v2/params")
-//    Observable<BasicResponse<InitBean>> getInitRequest(@Body InitRequest request);
-
-//    @GET("v2/params")
-//    Observable<BasicResponse<InitBean>> getInitRequest(@Query("username") String username, @Query("device_type") String device_type,
-//                                                       @Query("app_ver") String app_ver);
-//
-//    @FormUrlEncoded
-//    @POST("v2/auth/app")
-//    Observable<BasicResponse<LoginBean>> getLoginRequest(@Field("username") String username, @Field("password") String password,
-//                                                         @Field("device_id") String device_id);
-//
-//    @POST("v2/auth/app")
-//    Observable<BasicResponse<LoginBean>> getLogin(@Body RequestBody requestBody);
     @FormUrlEncoded
     @POST("user/login")
     Observable<BasicResponse<UserInfo>> getLogin(@Field("username") String username, @Field("password") String password);
@@ -114,13 +73,4 @@ public interface IdeaApiService {
     @FormUrlEncoded
     Observable<BasicResponse<MainArticle>> getSearchList(@Path("page") int page, @Field("k") String k);
 
-
-    /**
-     * method 表示请求的方法，区分大小写
-     * path表示路径
-     * hasBody表示是否有请求体
-
-    @HTTP(method = "GET", path = "project/list/{index}/json", hasBody = false)
-    Call<ResponseBody> getBlog(@Path("index") int index);
-     */
 }

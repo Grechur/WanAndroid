@@ -5,23 +5,23 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/blue">
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:title="你好"
         app:navigationIcon="@drawable/ic_back"/>
-<android.support.design.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparent">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/shop_app_bar"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:background="@color/transparent">
 
-        <android.support.design.widget.CollapsingToolbarLayout
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
             app:expandedTitleMarginBottom="100dp"
@@ -34,18 +34,18 @@
                 android:text="法撒噶哇嘎办法"
                 android:textColor="@color/white"
                 android:gravity="center"/>
-        </android.support.design.widget.CollapsingToolbarLayout>
-        <android.support.design.widget.TabLayout
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+        <com.google.android.material.tabs.TabLayout
             android:id="@+id/tl_layout"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@drawable/gradient_shape"/>
-    </android.support.design.widget.AppBarLayout>
-    <android.support.v4.view.ViewPager
+    </com.google.android.material.appbar.AppBarLayout>
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#E5E5E5"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 </LinearLayout>

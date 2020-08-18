@@ -1,20 +1,16 @@
 package com.grechur.wanandroid.view;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.grechur.library.adapter.CommonRecyclerAdapter;
-import com.grechur.library.adapter.MultiTypeSupport;
-import com.grechur.library.adapter.ViewHolder;
 import com.grechur.wanandroid.R;
 import com.grechur.wanandroid.model.entity.home.History;
-import com.grechur.wanandroid.view.adapter.FlowAdapter;
 
 import java.util.List;
 

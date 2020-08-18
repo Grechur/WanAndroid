@@ -1,36 +1,25 @@
 package com.grechur.wanandroid.ui.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.grechur.wanandroid.R;
 import com.grechur.wanandroid.aop.LoginCheck;
 import com.grechur.wanandroid.base.BaseFragment;
-import com.grechur.wanandroid.contract.HomeArticleContract;
 import com.grechur.wanandroid.contract.KnowArticleContract;
 import com.grechur.wanandroid.model.entity.Article;
-import com.grechur.wanandroid.model.entity.home.BannerItem;
 import com.grechur.wanandroid.model.entity.home.MainArticle;
-import com.grechur.wanandroid.presenter.HomeArticlePresenter;
 import com.grechur.wanandroid.presenter.KnowArticlePresenter;
-import com.grechur.wanandroid.ui.KnowledgeProcActivity;
 import com.grechur.wanandroid.ui.WebViewActivity;
 import com.grechur.wanandroid.utils.Constant;
 import com.grechur.wanandroid.utils.ToastUtils;
 import com.grechur.wanandroid.view.HomeFrgAdapter;
 import com.grechur.wanandroid.view.OnItemClickListener;
 import com.grechur.wanandroid.view.WrapRecyclerView;
-import com.zhouwei.mzbanner.MZBannerView;
-import com.zhouwei.mzbanner.holder.MZHolderCreator;
-import com.zhouwei.mzbanner.holder.MZViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;

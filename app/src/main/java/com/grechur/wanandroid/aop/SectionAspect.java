@@ -5,11 +5,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.grechur.wanandroid.ui.LoginActivity;
 import com.grechur.wanandroid.utils.AccountMgr;

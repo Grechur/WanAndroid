@@ -1,11 +1,8 @@
 package com.grechur.wanandroid.utils;
 
 import android.content.Context;
-import android.support.annotation.LayoutRes;
+import androidx.annotation.LayoutRes;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.grechur.wanandroid.base.WanApplication;

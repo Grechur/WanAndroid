@@ -7,10 +7,12 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.android.tools.build:gradle:3.2.0'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+        classpath 'org.aspectj:aspectjtools:1.9.1'
+        classpath 'org.aspectj:aspectjweaver:1.9.1'
     }
 }
 
@@ -31,7 +33,7 @@ ext {
     retrofitVersion = "2.3.0"
     okhttpVersion = "3.9.0"
     multiVersion = "1.0.0"
-    butterknife = "8.8.1"
+    butterknife = "10.2.3"
     rxpermissions = "0.9.5@aar"
     bottomnavigation = "2.0.4"
     greenDao = "3.2.0"

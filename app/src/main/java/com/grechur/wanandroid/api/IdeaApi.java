@@ -47,9 +47,9 @@ public class IdeaApi {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(IdeaApiService.DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
                 .connectTimeout(IdeaApiService.DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
-                .addInterceptor(interceptor)
+                /*.addInterceptor(interceptor)
                 .addNetworkInterceptor(new HttpCacheInterceptor())
-                .cache(cache)
+                .cache(cache)*/
                 .build();
 
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss")

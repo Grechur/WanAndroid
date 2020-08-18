@@ -2,11 +2,11 @@ package com.grechur.wanandroid.ui.fragment;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
+import androidx.annotation.RequiresApi;
+import com.google.android.material.tabs.TabLayout;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
 import android.view.View;
 
 import com.grechur.wanandroid.R;
@@ -15,11 +15,9 @@ import com.grechur.wanandroid.contract.NavigationContract;
 import com.grechur.wanandroid.model.entity.navigation.NaviArticle;
 import com.grechur.wanandroid.presenter.NavigationPresenter;
 import com.grechur.wanandroid.utils.Constant;
-import com.grechur.wanandroid.view.adapter.NaviViewPagerAdapter;
 import com.grechur.wanandroid.view.adapter.ViewPagerAdapter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;

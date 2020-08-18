@@ -1,4 +1,4 @@
-<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/search_toolbar"
     android:layout_width="match_parent"
@@ -54,4 +54,4 @@
             android:hint="输入字段搜索"
             android:transitionName="share2"/>
 
-</android.support.v7.widget.Toolbar>
+</androidx.appcompat.widget.Toolbar>

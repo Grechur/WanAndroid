@@ -3,8 +3,8 @@ package com.grechur.wanandroid.ui.fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +19,6 @@ import com.grechur.wanandroid.view.OnItemClickListener;
 import com.grechur.wanandroid.view.WrapRecyclerView;
 import com.grechur.wanandroid.view.adapter.DividerGridItemDecoration;
 import com.grechur.wanandroid.view.adapter.FlowAdapter;
-import com.grechur.wanandroid.view.adapter.FlowLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;

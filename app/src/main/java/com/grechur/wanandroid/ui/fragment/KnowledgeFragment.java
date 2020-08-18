@@ -2,8 +2,8 @@ package com.grechur.wanandroid.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.grechur.wanandroid.R;
@@ -13,12 +13,10 @@ import com.grechur.wanandroid.model.entity.knowlege.Children;
 import com.grechur.wanandroid.model.entity.knowlege.Knowledge;
 import com.grechur.wanandroid.presenter.KnowledgePresenter;
 import com.grechur.wanandroid.ui.KnowledgeProcActivity;
-import com.grechur.wanandroid.utils.ToastUtils;
 import com.grechur.wanandroid.view.KnowledgeAdapter;
 import com.grechur.wanandroid.view.OnItemClickListener;
 import com.grechur.wanandroid.view.WrapRecyclerView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;

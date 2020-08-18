@@ -1,9 +1,9 @@
 package com.grechur.wanandroid.ui.fragment;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
+import com.google.android.material.tabs.TabLayout;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 
 import com.grechur.wanandroid.R;
@@ -12,12 +12,9 @@ import com.grechur.wanandroid.contract.ProjectContract;
 import com.grechur.wanandroid.model.entity.project.ProjectBean;
 import com.grechur.wanandroid.presenter.ProjectPresent;
 import com.grechur.wanandroid.utils.Constant;
-import com.grechur.wanandroid.view.KnowledgeAdapter;
-import com.grechur.wanandroid.view.WrapRecyclerView;
 import com.grechur.wanandroid.view.adapter.ViewPagerAdapter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -87,7 +84,17 @@ public class ProjectFragment extends BaseFragment<ProjectPresent> implements Pro
 
     @Override
     public void onSucceed(List<ProjectBean> articles) {
-        for (ProjectBean article : articles) {
+//        for (ProjectBean article : articles) {
+//            mList.add(article.name);
+//            Bundle bundle = new Bundle();
+//            bundle.putInt(Constant.INTENT_PID, article.id);
+//            bundle.putString(Constant.INTENT_TITLE, article.name);
+//            Fragment fragment = ProjectDataFragment.newInstance(article.id,article.name);
+//            fragment.setArguments(bundle);
+//            mFragmentList.add(fragment);
+//        }
+        for (int i = 0; i < 6; i++) {
+            ProjectBean article = articles.get(i);
             mList.add(article.name);
             Bundle bundle = new Bundle();
             bundle.putInt(Constant.INTENT_PID, article.id);
@@ -96,7 +103,11 @@ public class ProjectFragment extends BaseFragment<ProjectPresent> implements Pro
             fragment.setArguments(bundle);
             mFragmentList.add(fragment);
         }
-
+        if(mFragmentList.size()<=5){
+            tl_project_layout.setTabMode(TabLayout.MODE_FIXED);
+        }else{
+            tl_project_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        }
         mPagerAdapter.notifyDataSetChanged();
     }
 

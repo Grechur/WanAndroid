@@ -1,65 +1,40 @@
 package com.grechur.wanandroid.ui;
 
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 
-import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import com.google.android.material.navigation.NavigationView;
+
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
-import com.bumptech.glide.Glide;
 import com.grechur.wanandroid.R;
-import com.grechur.wanandroid.aop.LoginCheck;
-import com.grechur.wanandroid.base.WanApplication;
 import com.grechur.wanandroid.ui.fragment.HistoryFragment;
 import com.grechur.wanandroid.ui.fragment.HomeFragment;
 import com.grechur.wanandroid.ui.fragment.KnowledgeFragment;
 import com.grechur.wanandroid.ui.fragment.NavigationFragment;
 import com.grechur.wanandroid.ui.fragment.ProjectFragment;
 import com.grechur.wanandroid.utils.AccountMgr;
-import com.grechur.wanandroid.utils.LogUtils;
 import com.grechur.wanandroid.utils.ToastUtils;
 import com.grechur.wanandroid.view.CommonAlertDialog;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -295,7 +270,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
 //                if (!mHistoryFragment.isAdded()) {
 //                    mHistoryFragment.show(transaction,"HistoryFragment");
 //                }
-                startActivity(new Intent(this,JumpToWXActivity.class));
                 break;
         }
     }

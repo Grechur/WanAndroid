@@ -1,6 +1,6 @@
 package com.grechur.wanandroid.aop;
 
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 
 import org.aspectj.lang.JoinPoint;

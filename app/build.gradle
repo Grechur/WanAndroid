@@ -14,14 +14,14 @@ buildscript {
     }
 }
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.grechur.wanandroid"
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         //添加如下配置就OK了
         javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
         //Enabling multidex support.
@@ -43,7 +43,11 @@ android {
         schemaVersion 1
         targetGenDir 'src/main/java'
     }
-
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
 }
 final def log = project.logger
 final def variants = project.android.applicationVariants
@@ -89,14 +93,14 @@ variants.all { variant ->
 }
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
-    implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.gms:play-services-plus:15.0.1'
-    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.google.android.material:material:1.0.0'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:retrofit-mock:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
@@ -114,7 +118,7 @@ dependencies {
     //魅族广告栏
     implementation 'com.github.pinguo-zhouwei:MZBannerView:v2.0.1'
     implementation 'com.github.Grechur:SelectPicture:v1.0'
-    implementation "com.android.support:multidex:$rootProject.multiVersion"
+    implementation 'androidx.multidex:multidex:2.0.0'
     //数据库
     implementation "org.greenrobot:greendao:$rootProject.greenDao"
     implementation 'com.google.code.gson:gson:2.8.4'
